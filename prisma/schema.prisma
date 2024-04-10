@@ -8,11 +8,11 @@ datasource db {
 }
 
 model User {
-  id               Int                @id
+  id               String             @id
   email            String             @unique
   phone            Int                @unique
   name             String
-  position         String[]
+  position         String[]           @default(["requester"])
   password         String
   MaintenceRequest MaintenceRequest[]
 }
@@ -33,10 +33,9 @@ model MaintenceRequest {
   id           Int    @id @default(autoincrement())
   plate        String
   km           Int
-  ownerOfReqId Int
+  ownerOfReqId String
   ownerOfReq   User   @relation(fields: [ownerOfReqId], references: [id])
   observation  String
   status       Int
   atendedBy    String
-  userId       Int
 }
