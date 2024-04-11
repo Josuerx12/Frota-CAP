@@ -21,10 +21,10 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsOptional()
   @IsPhoneNumber('BR', { message: 'Numero deve ser um numero válido' })
-  phone: number;
+  phone: string;
 
   @IsOptional()
-  position: string[] | string;
+  position: string[];
 
   @IsOptional()
   @IsStrongPassword({ minLength: 6, minUppercase: 1 })

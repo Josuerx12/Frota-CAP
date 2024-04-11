@@ -5,8 +5,9 @@ import {
   IsStrongPassword,
   Length,
 } from 'class-validator';
+import { User } from '../entities/user.entity';
 
-export class CreateUserDto {
+export class CreateUserDto extends User {
   @IsString({ message: 'Nome deve ser uma string' })
   @Length(3, 155, { message: 'Nome deve conter de 3 até 155 caracteres.' })
   name: string;
@@ -15,9 +16,9 @@ export class CreateUserDto {
   email: string;
 
   @IsPhoneNumber('BR', { message: 'Numero deve ser um numero válido' })
-  phone: number;
+  phone: string;
 
-  position: string[] | string;
+  position: string[];
 
   @IsStrongPassword({ minLength: 6, minUppercase: 1 })
   password: string;

@@ -4,7 +4,7 @@ interface IUser {
   id: string;
   name: string;
   email: string;
-  phone: number;
+  phone: string;
   position: string[];
   MaintenceRequest: MaintenceRequest[];
 }

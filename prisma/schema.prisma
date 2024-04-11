@@ -10,32 +10,40 @@ datasource db {
 model User {
   id               String             @id
   email            String             @unique
-  phone            Int                @unique
+  phone            String             @unique
   name             String
   position         String[]           @default(["requester"])
   password         String
   MaintenceRequest MaintenceRequest[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 }
 
 model Provider {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
-  Vehicle Vehicle[]
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  Vehicle   Vehicle[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Vehicle {
   plate      String   @id
   providerId Int
   provider   Provider @relation(fields: [providerId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model MaintenceRequest {
-  id           Int    @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   plate        String
   km           Int
   ownerOfReqId String
-  ownerOfReq   User   @relation(fields: [ownerOfReqId], references: [id])
+  ownerOfReq   User     @relation(fields: [ownerOfReqId], references: [id])
   observation  String
   status       Int
   atendedBy    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
