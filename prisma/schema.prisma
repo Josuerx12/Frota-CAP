@@ -28,7 +28,9 @@ model Provider {
 }
 
 model Vehicle {
-  plate      String   @id
+  id         Int      @id @default(autoincrement())
+  name       String
+  plate      String   @unique
   providerId Int
   provider   Provider @relation(fields: [providerId], references: [id])
   createdAt  DateTime @default(now())

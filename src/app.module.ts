@@ -7,14 +7,17 @@ import { AuthModule } from './auth/auth.module';
 import { ProviderModule } from './provider/provider.module';
 import { AuthGuardMiddleware } from './auth-guard/auth-guard.middleware';
 import { VehicleModule } from './vehicle/vehicle.module';
+import { MaintanceRequestModule } from './maintance-request/maintance-request.module';
 
 @Module({
-  imports: [UserModule, AuthModule, ProviderModule, VehicleModule],
+  imports: [UserModule, AuthModule, ProviderModule, VehicleModule, MaintanceRequestModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthGuardMiddleware).forRoutes('/user', '/provider');
+    consumer
+      .apply(AuthGuardMiddleware)
+      .forRoutes('/user', '/provider', '/vehicle');
   }
 }
