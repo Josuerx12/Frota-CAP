@@ -28,24 +28,39 @@ model Provider {
 }
 
 model Vehicle {
-  id         Int      @id @default(autoincrement())
+  id         Int                @id @default(autoincrement())
   name       String
-  plate      String   @unique
+  plate      String             @unique
   providerId Int
-  provider   Provider @relation(fields: [providerId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  provider   Provider           @relation(fields: [providerId], references: [id])
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  maintances MaintenceRequest[]
+}
+
+model budget {
+  id          Int              @id @default(autoincrement())
+  url         String
+  path        String
+  maintenceId Int
+  maintence   MaintenceRequest @relation(fields: [maintenceId], references: [id])
 }
 
 model MaintenceRequest {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
+  driverName   String
   plate        String
   km           Int
   ownerOfReqId String
-  ownerOfReq   User     @relation(fields: [ownerOfReqId], references: [id])
-  observation  String
-  status       Int
-  atendedBy    String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  ownerOfReq   User      @relation(fields: [ownerOfReqId], references: [id])
+  observation  String?
+  status       Int?      @default(0)
+  atendedBy    String?   @default("")
+  atendedAt    DateTime?
+  finishedBy   String?   @default("")
+  finishedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  budgets      budget[]
+  Vehicle      Vehicle?  @relation(fields: [plate], references: [plate])
 }
