@@ -43,24 +43,33 @@ model budget {
   url         String
   path        String
   maintenceId Int
+  deadline    DateTime
+  status      Int?             @default(0)
   maintence   MaintenceRequest @relation(fields: [maintenceId], references: [id])
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 }
 
 model MaintenceRequest {
-  id           Int       @id @default(autoincrement())
-  driverName   String
-  plate        String
-  km           Int
-  ownerOfReqId String
-  ownerOfReq   User      @relation(fields: [ownerOfReqId], references: [id])
-  observation  String?
-  status       Int?      @default(0)
-  atendedBy    String?   @default("")
-  atendedAt    DateTime?
-  finishedBy   String?   @default("")
-  finishedAt   DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  budgets      budget[]
-  Vehicle      Vehicle?  @relation(fields: [plate], references: [plate])
+  id                Int       @id @default(autoincrement())
+  driverName        String
+  plate             String
+  km                Int
+  ownerOfReqId      String
+  ownerOfReq        User      @relation(fields: [ownerOfReqId], references: [id])
+  observation       String?
+  status            Int?      @default(0)
+  atendedBy         String?   @default("")
+  atendedAt         DateTime?
+  deadlineToDeviler DateTime?
+  delivered         Boolean   @default(false)
+  deliveredAt       DateTime?
+  finishedBy        String?   @default("")
+  finishedAt        DateTime?
+  checkoutBy        String?
+  checkoutAt        DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  budgets           budget[]
+  Vehicle           Vehicle?  @relation(fields: [plate], references: [plate])
 }

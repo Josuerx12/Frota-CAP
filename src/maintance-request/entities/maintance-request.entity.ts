@@ -3,6 +3,11 @@ import { Prisma } from '@prisma/client';
 export class MaintanceRequest
   implements Prisma.MaintenceRequestUncheckedCreateInput
 {
+  checkoutAt?: string | Date;
+  checkoutBy?: string;
+  deadlineToDeviler?: string | Date;
+  delivered?: boolean;
+  deliveredAt?: string | Date;
   driverName: string;
   id?: number;
   plate: string;

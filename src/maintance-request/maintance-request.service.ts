@@ -3,10 +3,15 @@ import { CreateMaintanceRequestDto } from './dto/create-maintance-request.dto';
 import { UpdateMaintanceRequestDto } from './dto/update-maintance-request.dto';
 import { IUser } from 'src/interfaces/User';
 import { PrismaService } from 'src/prisma.service';
+import { EmailService } from 'src/email.service';
+import { IMaintenceRequest } from 'src/interfaces/MaintenceRequest';
 
 @Injectable()
 export class MaintanceRequestService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(
+    private readonly db: PrismaService,
+    private readonly mail: EmailService,
+  ) {}
 
   async create(
     createMaintanceRequestDto: CreateMaintanceRequestDto,
@@ -22,12 +27,20 @@ export class MaintanceRequestService {
       data: {
         ...createMaintanceRequestDto,
       },
+      include: {
+        budgets: true,
+        Vehicle: true,
+        ownerOfReq: true,
+      },
     });
+
+    this.mail.sendMessage(request.ownerOfReq.email, request);
 
     return `Solicitação numero: ${request.id}, criada com sucesso!`;
   }
 
   async findAll(user: IUser) {
+    console.log(user);
     if (
       !user.position.includes('frotas') &&
       !user.position.includes('oficina')
@@ -92,11 +105,138 @@ export class MaintanceRequestService {
     return { requests };
   }
 
-  update(
+  basicValidations(
+    request: IMaintenceRequest,
+    updatedCredentials: UpdateMaintanceRequestDto,
+    user: IUser,
+  ) {
+    if (
+      updatedCredentials.status < 0 ||
+      updatedCredentials.status < request.status ||
+      updatedCredentials.status > request.status + 1
+    ) {
+      throw new BadRequestException(
+        'Não é possivel continuar com essa requisição pois você está tentando burlar o status da solicitação!',
+      );
+    }
+    if (
+      (!user.position.includes('frotas') && updatedCredentials.status === 1) ||
+      (!user.position.includes('frotas') && updatedCredentials.status === 2) ||
+      !user.position.includes('frotas')
+    ) {
+      throw new BadRequestException(
+        'Você não tem autorização para realizar essa requisição!',
+      );
+    }
+
+    if (
+      (user.position.includes('oficina') && updatedCredentials.status === 3) ||
+      (user.position.includes('oficina') && updatedCredentials.status === 4) ||
+      (user.position.includes('oficina') && updatedCredentials.status === 5) ||
+      (user.position.includes('oficina') && updatedCredentials.status === 6) ||
+      (user.position.includes('oficina') && updatedCredentials.status === 7)
+    ) {
+      throw new BadRequestException(
+        'Você não tem autorização para realizar essa requisição!',
+      );
+    }
+  }
+
+  async update(
     id: number,
     updateMaintanceRequestDto: UpdateMaintanceRequestDto,
     user: IUser,
   ) {
+    const requestFromDb = await this.db.maintenceRequest.findUnique({
+      where: { id },
+      include: {
+        budgets: true,
+        ownerOfReq: true,
+        Vehicle: true,
+      },
+    });
+
+    this.basicValidations(requestFromDb, updateMaintanceRequestDto, user);
+
+    if (updateMaintanceRequestDto.status === 1) {
+      const res = await this.db.maintenceRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          ...updateMaintanceRequestDto,
+        },
+        include: {
+          budgets: true,
+          ownerOfReq: true,
+          Vehicle: true,
+        },
+      });
+      this.mail.sendMessage(res.ownerOfReq.email, res);
+    }
+
+    if (updateMaintanceRequestDto.status === 2) {
+      await this.db.maintenceRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          ...updateMaintanceRequestDto,
+        },
+      });
+    }
+
+    if (updateMaintanceRequestDto.status === 3) {
+      await this.db.maintenceRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          ...updateMaintanceRequestDto,
+        },
+      });
+    }
+    if (updateMaintanceRequestDto.status === 4) {
+      await this.db.maintenceRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          ...updateMaintanceRequestDto,
+        },
+      });
+    }
+    if (updateMaintanceRequestDto.status === 5) {
+      await this.db.maintenceRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          ...updateMaintanceRequestDto,
+        },
+      });
+    }
+    if (updateMaintanceRequestDto.status === 6) {
+      await this.db.maintenceRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          ...updateMaintanceRequestDto,
+        },
+      });
+    }
+    if (updateMaintanceRequestDto.status === 7) {
+      await this.db.maintenceRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          ...updateMaintanceRequestDto,
+        },
+      });
+    }
+
     return `This action updates a #${id} maintanceRequest`;
   }
 

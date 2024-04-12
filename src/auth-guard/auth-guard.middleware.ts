@@ -54,9 +54,10 @@ export class AuthGuardMiddleware implements NestMiddleware {
               phone: true,
               position: true,
               MaintenceRequest: true,
+              createdAt: true,
+              updatedAt: true,
             },
           });
-
           req.user = user;
           next();
         }

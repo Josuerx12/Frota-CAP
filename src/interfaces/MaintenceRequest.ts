@@ -1,11 +1,27 @@
-interface MaintenceRequest {
+interface IMaintenceRequest {
   id: number;
   plate: string;
+  driverName: string;
   km: number;
   ownerOfReqId: string;
-  observation: string;
+  observation?: string;
   status: number;
-  atendedBy: string;
+  atendedBy?: string;
+  atendedAt?: Date;
+  finishedBy?: string;
+  finishedAt?: Date;
+  budget?: IBudget[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export { MaintenceRequest };
+interface IBudget {
+  id: number;
+  url: string;
+  path: string;
+  maintanceId: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export { IMaintenceRequest, IBudget };
