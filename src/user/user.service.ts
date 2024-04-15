@@ -110,6 +110,22 @@ export class UserService {
     return { user };
   }
 
+  async findWorkshops() {
+    const usersWithWorkshops = await this.db.user.findMany({
+      where: {
+        NOT: {
+          position: {
+            equals: [],
+          },
+        },
+        position: {
+          has: 'oficina',
+        },
+      },
+    });
+    return { workshops: usersWithWorkshops };
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto, user: IUser) {
     const userFromDb = await this.db.user.findUnique({
       where: { id },

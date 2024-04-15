@@ -26,6 +26,10 @@ export class UserController {
   findAll(@Req() req: Request) {
     return this.userService.findAll(req.user);
   }
+  @Get('/workshops')
+  findWorkShops() {
+    return this.userService.findWorkshops();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

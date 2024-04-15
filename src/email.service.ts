@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { createTransport } from 'nodemailer';
-import { compile } from 'handlebars';
-import { readFileSync } from 'fs';
+import { Transporter, createTransport } from 'nodemailer';
 import { IMaintenceRequest } from './interfaces/MaintenceRequest';
+import { sendMessage as sendMailTemplate } from './mail-templates/email';
 
 @Injectable()
 export class EmailService {
-  private transporter;
+  private transporter: Transporter;
 
   constructor() {
     this.transporter = createTransport({
@@ -20,16 +19,17 @@ export class EmailService {
     });
   }
 
-  async sendMessage(to: string, request: IMaintenceRequest) {
+  async send(to: string, request: IMaintenceRequest) {
     try {
-      const html = compile(
-        readFileSync('src/mail-templates/email.hbs', 'utf8'),
-      )(request);
-      await this.transporter({
+      await this.transporter.sendMail({
         from: process.env.MAIL,
         cc: process.env.FROTAMAIL,
+        subject:
+          request.status === 0
+            ? `Nova Solicitação Nº ${request.id} - FROTAS CAP`
+            : `Atualização Sobre a Solicitação Nº ${request.id} - FROTAS CAP`,
         to,
-        html,
+        html: sendMailTemplate(request),
       });
     } catch (error) {
       console.error('Erro ao enviar o e-mail:', error);

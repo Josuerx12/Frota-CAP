@@ -58,6 +58,8 @@ model MaintenceRequest {
   ownerOfReqId      String
   ownerOfReq        User      @relation(fields: [ownerOfReqId], references: [id])
   observation       String?
+  workShopId        String?
+  deadlineToForward DateTime?
   status            Int?      @default(0)
   atendedBy         String?   @default("")
   atendedAt         DateTime?

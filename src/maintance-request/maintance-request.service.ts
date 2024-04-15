@@ -34,7 +34,7 @@ export class MaintanceRequestService {
       },
     });
 
-    this.mail.sendMessage(request.ownerOfReq.email, request);
+    this.mail.send(request.ownerOfReq.email, request);
 
     return `Solicitação numero: ${request.id}, criada com sucesso!`;
   }
@@ -105,6 +105,19 @@ export class MaintanceRequestService {
     return { requests };
   }
 
+  async findByWorkshop(user: IUser) {
+    const requests = await this.db.maintenceRequest.findMany({
+      where: { workShopId: user.id },
+      include: {
+        budgets: true,
+        ownerOfReq: true,
+        Vehicle: true,
+      },
+    });
+
+    return { requests };
+  }
+
   basicValidations(
     request: IMaintenceRequest,
     updatedCredentials: UpdateMaintanceRequestDto,
@@ -165,6 +178,8 @@ export class MaintanceRequestService {
         },
         data: {
           ...updateMaintanceRequestDto,
+          atendedBy: user.name,
+          atendedAt: new Date(),
         },
         include: {
           budgets: true,
@@ -172,69 +187,133 @@ export class MaintanceRequestService {
           Vehicle: true,
         },
       });
-      this.mail.sendMessage(res.ownerOfReq.email, res);
+      this.mail.send(res.ownerOfReq.email, res);
     }
 
     if (updateMaintanceRequestDto.status === 2) {
-      await this.db.maintenceRequest.update({
+      if (!updateMaintanceRequestDto.workShopId) {
+        throw new BadRequestException('ID da oficina deve ser informado!');
+      }
+      if (!updateMaintanceRequestDto.deadlineToDeviler) {
+        throw new BadRequestException(
+          'Data para entrega do veiculo é obrigatoria!',
+        );
+      }
+
+      const res = await this.db.maintenceRequest.update({
         where: {
           id,
         },
         data: {
           ...updateMaintanceRequestDto,
         },
+        include: {
+          budgets: true,
+          ownerOfReq: true,
+          Vehicle: true,
+        },
       });
+      await this.mail.send(res.ownerOfReq.email, res);
     }
 
     if (updateMaintanceRequestDto.status === 3) {
-      await this.db.maintenceRequest.update({
+      const res = await this.db.maintenceRequest.update({
         where: {
           id,
         },
         data: {
           ...updateMaintanceRequestDto,
+          delivered: true,
+          deliveredAt: new Date(),
+        },
+        include: {
+          budgets: true,
+          ownerOfReq: true,
+          Vehicle: true,
         },
       });
+
+      await this.mail.send(res.ownerOfReq.email, res);
     }
     if (updateMaintanceRequestDto.status === 4) {
-      await this.db.maintenceRequest.update({
+      const res = await this.db.maintenceRequest.update({
         where: {
           id,
         },
         data: {
           ...updateMaintanceRequestDto,
         },
+        include: {
+          budgets: true,
+          ownerOfReq: true,
+          Vehicle: true,
+        },
       });
+      await this.mail.send(res.ownerOfReq.email, res);
     }
     if (updateMaintanceRequestDto.status === 5) {
-      await this.db.maintenceRequest.update({
+      if (!updateMaintanceRequestDto.deadlineToForward) {
+        throw new BadRequestException(
+          'Data do prazo de entrega é obrigatorio para avançar.',
+        );
+      }
+
+      const res = await this.db.maintenceRequest.update({
         where: {
           id,
         },
         data: {
           ...updateMaintanceRequestDto,
         },
+        include: {
+          budgets: true,
+          ownerOfReq: true,
+          Vehicle: true,
+        },
       });
+
+      await this.mail.send(res.ownerOfReq.email, res);
     }
     if (updateMaintanceRequestDto.status === 6) {
-      await this.db.maintenceRequest.update({
+      const res = await this.db.maintenceRequest.update({
         where: {
           id,
         },
         data: {
           ...updateMaintanceRequestDto,
         },
+        include: {
+          budgets: true,
+          ownerOfReq: true,
+          Vehicle: true,
+        },
       });
+
+      await this.mail.send(res.ownerOfReq.email, res);
     }
     if (updateMaintanceRequestDto.status === 7) {
-      await this.db.maintenceRequest.update({
+      if (!updateMaintanceRequestDto.checkoutBy) {
+        throw new BadRequestException(
+          'Informar quem retirou o veiculo é obrigatorio!',
+        );
+      }
+
+      const res = await this.db.maintenceRequest.update({
         where: {
           id,
         },
         data: {
           ...updateMaintanceRequestDto,
+          checkoutAt: new Date(),
+        },
+        include: {
+          budgets: true,
+          ownerOfReq: true,
+          Vehicle: true,
         },
       });
+
+      await this.mail.send(res.ownerOfReq.email, res);
     }
 
     return `This action updates a #${id} maintanceRequest`;
