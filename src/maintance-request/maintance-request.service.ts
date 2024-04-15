@@ -5,13 +5,29 @@ import { IUser } from 'src/interfaces/User';
 import { PrismaService } from 'src/prisma.service';
 import { EmailService } from 'src/email.service';
 import { IMaintenceRequest } from 'src/interfaces/MaintenceRequest';
+import axios, { AxiosInstance } from 'axios';
 
 @Injectable()
 export class MaintanceRequestService {
+  private api: AxiosInstance;
+
   constructor(
     private readonly db: PrismaService,
     private readonly mail: EmailService,
-  ) {}
+  ) {
+    this.api = axios.create({
+      baseURL: process.env.ZAPI_URI,
+      headers: { Client_Token: process.env.ZAPI_TOKEN },
+    });
+  }
+
+  wppMessageTemplate(req: IMaintenceRequest): string {
+    return (
+      '*Frota CAP : Manutenção de Veículos*\n\n' +
+      `${req.status === 1 ? '*✴️ Seu chamado está sendo agendado✴️*\n\n' : req.status === 2 ? '*⛔ Encaminhar Veículo para oficina ⛔*\n\n' : req.status === 3 ? '*⚠️ Veículo chegou na oficina ⚠️*\n\n' : req.status === 4 ? '*📥 Orçamento enviado para aprovação📥*\n\n' : req.status === 5 ? '*🛠️ Veículo em manutenção 🛠️*\n\n' : req.status === 6 ? '*✅ Veículo Pronto para Retirada ✅*\n\n' : req.status === 7 && '*🆗Veículo Retirado🆗*\n\n'}` +
+      `${req.status === 1 ? `Estamos agendando seu chamado numero:${req.id}, na oficina!` : req.status === 2 ? `O Veículo deverá ser encaminhado para oficina no dia ${req.deadlineToDeliver}.` : req.status === 3 ? 'O Veículo Chegou na Oficina.' : req.status === 4 ? 'Aguardando aprovação do orçamento.' : req.status === 5 ? `Orçamento aprovado, veículo está em manutenção com prazo de entrega até ${req.deadlineToForward}.` : req.status === 6 ? 'O veículo está pronto para retirada.' : req.status === 7 && `O veículo foi retirado por ${req.checkoutBy} as ${new Date(req.checkoutAt).toLocaleString('pt-BR')}`}`
+    );
+  }
 
   async create(
     createMaintanceRequestDto: CreateMaintanceRequestDto,
@@ -35,6 +51,14 @@ export class MaintanceRequestService {
     });
 
     this.mail.send(request.ownerOfReq.email, request);
+
+    await this.api.post('/send-text', {
+      phone: `55${request.ownerOfReq.phone}`,
+      message:
+        '*Frota CAP : Manutenção de Veículos*\n\n' +
+        `*🆕 Seu chamado Nº ${request.id} foi recebido 🆕*\n\n` +
+        'Iremos agendar seu chamado na Oficina',
+    });
 
     return `Solicitação numero: ${request.id}, criada com sucesso!`;
   }
@@ -187,7 +211,11 @@ export class MaintanceRequestService {
           Vehicle: true,
         },
       });
-      this.mail.send(res.ownerOfReq.email, res);
+      await this.mail.send(res.ownerOfReq.email, res);
+      await this.api.post('/send-message', {
+        phone: `55${res.ownerOfReq.phone}`,
+        message: this.wppMessageTemplate(res),
+      });
     }
 
     if (updateMaintanceRequestDto.status === 2) {
@@ -214,6 +242,10 @@ export class MaintanceRequestService {
         },
       });
       await this.mail.send(res.ownerOfReq.email, res);
+      await this.api.post('/send-message', {
+        phone: `55${res.ownerOfReq.phone}`,
+        message: this.wppMessageTemplate(res),
+      });
     }
 
     if (updateMaintanceRequestDto.status === 3) {
@@ -234,6 +266,10 @@ export class MaintanceRequestService {
       });
 
       await this.mail.send(res.ownerOfReq.email, res);
+      await this.api.post('/send-message', {
+        phone: `55${res.ownerOfReq.phone}`,
+        message: this.wppMessageTemplate(res),
+      });
     }
     if (updateMaintanceRequestDto.status === 4) {
       const res = await this.db.maintenceRequest.update({
@@ -250,6 +286,10 @@ export class MaintanceRequestService {
         },
       });
       await this.mail.send(res.ownerOfReq.email, res);
+      await this.api.post('/send-message', {
+        phone: `55${res.ownerOfReq.phone}`,
+        message: this.wppMessageTemplate(res),
+      });
     }
     if (updateMaintanceRequestDto.status === 5) {
       if (!updateMaintanceRequestDto.deadlineToForward) {
@@ -273,6 +313,10 @@ export class MaintanceRequestService {
       });
 
       await this.mail.send(res.ownerOfReq.email, res);
+      await this.api.post('/send-message', {
+        phone: `55${res.ownerOfReq.phone}`,
+        message: this.wppMessageTemplate(res),
+      });
     }
     if (updateMaintanceRequestDto.status === 6) {
       const res = await this.db.maintenceRequest.update({
@@ -290,6 +334,10 @@ export class MaintanceRequestService {
       });
 
       await this.mail.send(res.ownerOfReq.email, res);
+      await this.api.post('/send-message', {
+        phone: `55${res.ownerOfReq.phone}`,
+        message: this.wppMessageTemplate(res),
+      });
     }
     if (updateMaintanceRequestDto.status === 7) {
       if (!updateMaintanceRequestDto.checkoutBy) {
@@ -314,6 +362,10 @@ export class MaintanceRequestService {
       });
 
       await this.mail.send(res.ownerOfReq.email, res);
+      await this.api.post('/send-message', {
+        phone: `55${res.ownerOfReq.phone}`,
+        message: this.wppMessageTemplate(res),
+      });
     }
 
     return `Solicitação de manutenção ${id}, atualizada com sucesso!`;

@@ -5,11 +5,17 @@ interface IMaintenceRequest {
   km: number;
   ownerOfReqId: string;
   observation?: string;
+  deadlineToForward?: Date | string;
+  deadlineToDeliver?: Date | string;
+  delivered: boolean;
+  deliveredAt?: Date | string;
   status: number;
   atendedBy?: string;
   atendedAt?: Date;
   finishedBy?: string;
   finishedAt?: Date;
+  checkoutBy?: string;
+  checkoutAt?: Date | string;
   budget?: IBudget[];
   createdAt: Date;
   updatedAt: Date;

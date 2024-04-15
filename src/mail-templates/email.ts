@@ -28,13 +28,13 @@ export function sendMessage(request: IMaintenceRequest) {
               ? `<div>
       <p class='text-xl font-semibold'>✴️ Seu chamado está sendo agendado✴️</p>
       <p>Estamos agendando seu chamado numero:
-        {{request.id}}, na oficina!</p>
+        ${request.id}, na oficina!</p>
     </div>`
               : request.status === 2
                 ? ` <div>
     <p class='text-xl font-semibold'>⛔ Encaminhar Veículo para oficina ⛔</p>
     <p>O Veículo deverá ser encaminhado para oficina no dia
-      {{request.deadlineToDeviler}}.</p>
+      ${request.deadlineToDeliver}.</p>
   </div>`
                 : request.status === 3
                   ? `<div>
@@ -52,7 +52,7 @@ export function sendMessage(request: IMaintenceRequest) {
 <p class='text-xl font-semibold'>🛠️ Veículo em manutenção 🛠️</p>
 <p>Orçamento aprovado, veículo está em manutenção com prazo de entrega
   até
-  {{request.deadlineToDeviler}}.</p>
+  ${request.deadlineToForward}.</p>
 </div>`
                       : request.status === 6
                         ? ` <div>
@@ -63,8 +63,8 @@ export function sendMessage(request: IMaintenceRequest) {
                           `<div>
 <p class='text-xl font-semibold'>🆗Veículo Retirado🆗</p>
 <p>O veículo foi retirado por
-  {{request.checkoutBy}}
-  {{request.checkoutAt}}</p>
+  ${request.checkoutBy} as
+  ${new Date(request.checkoutAt).toLocaleString('pt-BR')}</p>
 </div>`
         }
 
