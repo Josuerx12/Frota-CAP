@@ -316,7 +316,7 @@ export class MaintanceRequestService {
       await this.mail.send(res.ownerOfReq.email, res);
     }
 
-    return `This action updates a #${id} maintanceRequest`;
+    return `Solicitação de manutenção ${id}, atualizada com sucesso!`;
   }
 
   async remove(id: number, user: IUser) {
