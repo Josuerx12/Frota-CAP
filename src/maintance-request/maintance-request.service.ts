@@ -3,7 +3,7 @@ import { CreateMaintanceRequestDto } from './dto/create-maintance-request.dto';
 import { UpdateMaintanceRequestDto } from './dto/update-maintance-request.dto';
 import { IUser } from 'src/interfaces/User';
 import { PrismaService } from 'src/prisma.service';
-import { EmailService } from 'src/email.service';
+import { EmailService } from '../email.service';
 import { IMaintenceRequest } from 'src/interfaces/MaintenceRequest';
 import axios, { AxiosInstance } from 'axios';
 

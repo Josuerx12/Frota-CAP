@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MaintanceRequestService } from './maintance-request.service';
 import { MaintanceRequestController } from './maintance-request.controller';
 import { PrismaService } from 'src/prisma.service';
-import { EmailService } from 'src/email.service';
+import { EmailService } from '../email.service';
 
 @Module({
   controllers: [MaintanceRequestController],
