@@ -8,8 +8,6 @@ import { ProviderModule } from './provider/provider.module';
 import { AuthGuardMiddleware } from './auth-guard/auth-guard.middleware';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { MaintanceRequestModule } from './maintance-request/maintance-request.module';
-import { EmailService } from './email.service';
-
 @Module({
   imports: [
     UserModule,
@@ -19,7 +17,7 @@ import { EmailService } from './email.service';
     MaintanceRequestModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, EmailService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
