@@ -8,6 +8,7 @@ import { ProviderModule } from './provider/provider.module';
 import { AuthGuardMiddleware } from './auth-guard/auth-guard.middleware';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { MaintanceRequestModule } from './maintance-request/maintance-request.module';
+import { EmailService } from './email.service';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MaintanceRequestModule } from './maintance-request/maintance-request.mo
     ProviderModule,
     VehicleModule,
     MaintanceRequestModule,
+    EmailService,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
