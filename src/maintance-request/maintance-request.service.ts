@@ -17,7 +17,7 @@ export class MaintanceRequestService {
   ) {
     this.api = axios.create({
       baseURL: process.env.ZAPI_URI,
-      headers: { Client_Token: process.env.ZAPI_TOKEN },
+      headers: { 'Client-Token': process.env.ZAPI_TOKEN },
     });
   }
 
@@ -25,7 +25,7 @@ export class MaintanceRequestService {
     return (
       '*Frota CAP : Manutenção de Veículos*\n\n' +
       `${req.status === 1 ? '*✴️ Seu chamado está sendo agendado✴️*\n\n' : req.status === 2 ? '*⛔ Encaminhar Veículo para oficina ⛔*\n\n' : req.status === 3 ? '*⚠️ Veículo chegou na oficina ⚠️*\n\n' : req.status === 4 ? '*📥 Orçamento enviado para aprovação📥*\n\n' : req.status === 5 ? '*🛠️ Veículo em manutenção 🛠️*\n\n' : req.status === 6 ? '*✅ Veículo Pronto para Retirada ✅*\n\n' : req.status === 7 && '*🆗Veículo Retirado🆗*\n\n'}` +
-      `${req.status === 1 ? `Estamos agendando seu chamado numero:${req.id}, na oficina!` : req.status === 2 ? `O Veículo deverá ser encaminhado para oficina no dia ${req.deadlineToDeliver}.` : req.status === 3 ? 'O Veículo Chegou na Oficina.' : req.status === 4 ? 'Aguardando aprovação do orçamento.' : req.status === 5 ? `Orçamento aprovado, veículo está em manutenção com prazo de entrega até ${req.deadlineToForward}.` : req.status === 6 ? 'O veículo está pronto para retirada.' : req.status === 7 && `O veículo foi retirado por ${req.checkoutBy} as ${new Date(req.checkoutAt).toLocaleString('pt-BR')}`}`
+      `${req.status === 1 ? `Estamos agendando seu chamado numero:${req.id}, na oficina!` : req.status === 2 ? `O Veículo deverá ser encaminhado para oficina no dia ${req.deadlineToDeviler}.` : req.status === 3 ? 'O Veículo Chegou na Oficina.' : req.status === 4 ? 'Aguardando aprovação do orçamento.' : req.status === 5 ? `Orçamento aprovado, veículo está em manutenção com prazo de entrega até ${req.deadlineToForward}.` : req.status === 6 ? 'O veículo está pronto para retirada.' : req.status === 7 && `O veículo foi retirado por ${req.checkoutBy} as ${new Date(req.checkoutAt).toLocaleString('pt-BR')}`}`
     );
   }
 
@@ -50,15 +50,14 @@ export class MaintanceRequestService {
       },
     });
 
-    this.mail.send(request.ownerOfReq.email, request);
+    await this.mail.send(request.ownerOfReq.email, request);
 
-    await this.api.post('/send-text', {
-      phone: `55${request.ownerOfReq.phone}`,
-      message:
-        '*Frota CAP : Manutenção de Veículos*\n\n' +
-        `*🆕 Seu chamado Nº ${request.id} foi recebido 🆕*\n\n` +
-        'Iremos agendar seu chamado na Oficina',
-    });
+    await this.api
+      .post('/send-text', {
+        phone: `55${request.ownerOfReq.phone}`,
+        message: `*Frota CAP : Manutenção de Veículos*\n\n*🆕 Seu chamado Nº ${request.id} foi recebido 🆕*\n\nIremos agendar seu chamado na Oficina`,
+      })
+      .catch((err) => console.log(err.message));
 
     return `Solicitação numero: ${request.id}, criada com sucesso!`;
   }
@@ -167,11 +166,11 @@ export class MaintanceRequestService {
     }
 
     if (
-      (user.position.includes('oficina') && updatedCredentials.status === 3) ||
-      (user.position.includes('oficina') && updatedCredentials.status === 4) ||
-      (user.position.includes('oficina') && updatedCredentials.status === 5) ||
-      (user.position.includes('oficina') && updatedCredentials.status === 6) ||
-      (user.position.includes('oficina') && updatedCredentials.status === 7)
+      (!user.position.includes('oficina') && updatedCredentials.status === 3) ||
+      (!user.position.includes('oficina') && updatedCredentials.status === 4) ||
+      (!user.position.includes('oficina') && updatedCredentials.status === 5) ||
+      (!user.position.includes('oficina') && updatedCredentials.status === 6) ||
+      (!user.position.includes('oficina') && updatedCredentials.status === 7)
     ) {
       throw new BadRequestException(
         'Você não tem autorização para realizar essa requisição!',
@@ -201,7 +200,6 @@ export class MaintanceRequestService {
           id,
         },
         data: {
-          ...updateMaintanceRequestDto,
           atendedBy: user.name,
           atendedAt: new Date(),
         },
@@ -212,7 +210,7 @@ export class MaintanceRequestService {
         },
       });
       await this.mail.send(res.ownerOfReq.email, res);
-      await this.api.post('/send-message', {
+      await this.api.post('/send-text', {
         phone: `55${res.ownerOfReq.phone}`,
         message: this.wppMessageTemplate(res),
       });
@@ -242,7 +240,7 @@ export class MaintanceRequestService {
         },
       });
       await this.mail.send(res.ownerOfReq.email, res);
-      await this.api.post('/send-message', {
+      await this.api.post('/send-text', {
         phone: `55${res.ownerOfReq.phone}`,
         message: this.wppMessageTemplate(res),
       });
@@ -266,7 +264,7 @@ export class MaintanceRequestService {
       });
 
       await this.mail.send(res.ownerOfReq.email, res);
-      await this.api.post('/send-message', {
+      await this.api.post('/send-text', {
         phone: `55${res.ownerOfReq.phone}`,
         message: this.wppMessageTemplate(res),
       });
@@ -286,7 +284,7 @@ export class MaintanceRequestService {
         },
       });
       await this.mail.send(res.ownerOfReq.email, res);
-      await this.api.post('/send-message', {
+      await this.api.post('/send-text', {
         phone: `55${res.ownerOfReq.phone}`,
         message: this.wppMessageTemplate(res),
       });
@@ -313,7 +311,7 @@ export class MaintanceRequestService {
       });
 
       await this.mail.send(res.ownerOfReq.email, res);
-      await this.api.post('/send-message', {
+      await this.api.post('/send-text', {
         phone: `55${res.ownerOfReq.phone}`,
         message: this.wppMessageTemplate(res),
       });
@@ -334,7 +332,7 @@ export class MaintanceRequestService {
       });
 
       await this.mail.send(res.ownerOfReq.email, res);
-      await this.api.post('/send-message', {
+      await this.api.post('/send-text', {
         phone: `55${res.ownerOfReq.phone}`,
         message: this.wppMessageTemplate(res),
       });
@@ -362,7 +360,7 @@ export class MaintanceRequestService {
       });
 
       await this.mail.send(res.ownerOfReq.email, res);
-      await this.api.post('/send-message', {
+      await this.api.post('/send-text', {
         phone: `55${res.ownerOfReq.phone}`,
         message: this.wppMessageTemplate(res),
       });

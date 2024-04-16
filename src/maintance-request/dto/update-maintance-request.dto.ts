@@ -11,8 +11,8 @@ export class UpdateMaintanceRequestDto extends PartialType(
 
   @IsOptional()
   @IsDateString(
-    {},
-    { message: 'Data para levar veicuolo até a oficina é obrigatoria!' },
+    { strict: true },
+    { message: 'Data para levar veiculo até a oficina é obrigatoria!' },
   )
   deadlineToForward?: string | Date;
 }

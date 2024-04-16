@@ -6,7 +6,7 @@ interface IMaintenceRequest {
   ownerOfReqId: string;
   observation?: string;
   deadlineToForward?: Date | string;
-  deadlineToDeliver?: Date | string;
+  deadlineToDeviler?: Date | string;
   delivered: boolean;
   deliveredAt?: Date | string;
   status: number;
