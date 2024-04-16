@@ -17,10 +17,9 @@ import { EmailService } from './email.service';
     ProviderModule,
     VehicleModule,
     MaintanceRequestModule,
-    EmailService,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, EmailService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
