@@ -26,7 +26,7 @@ export class UserController {
   findAll(@Req() req: Request) {
     return this.userService.findAll(req.user);
   }
-  @Get()
+  @Get('/profile')
   profile(@Req() req: Request) {
     return this.userService.profile(req.user);
   }
