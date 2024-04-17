@@ -7,7 +7,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     origin: '*',
-    methods: 'GET,POST,PUT,DELETE',
+    methods: 'GET,POST,PUT,PATCH ,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
   });
   await app.listen(3000);
