@@ -126,6 +126,27 @@ export class UserService {
     return { workshops: usersWithWorkshops };
   }
 
+  async profile(user: IUser) {
+    const userDetails = await this.db.user.findUnique({
+      where: {
+        id: user.id,
+      },
+      select: {
+        email: true,
+        password: false,
+        id: true,
+        name: true,
+        phone: true,
+        position: true,
+        MaintenceRequest: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return { user: userDetails };
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto, user: IUser) {
     const userFromDb = await this.db.user.findUnique({
       where: { id },
