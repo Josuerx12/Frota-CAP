@@ -34,6 +34,14 @@ export class MaintanceRequestController {
   findAll(@Req() req: Request) {
     return this.maintanceRequestService.findAll(req.user);
   }
+  @Get('/workshop')
+  findByWorshop(@Req() req: Request) {
+    return this.maintanceRequestService.findByWorkshop(req.user);
+  }
+  @Get('/user')
+  findByUser(@Req() req: Request) {
+    return this.maintanceRequestService.findByUser(req.user);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string, @Req() req: Request) {

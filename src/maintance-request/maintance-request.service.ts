@@ -115,7 +115,7 @@ export class MaintanceRequestService {
     return { request };
   }
 
-  async findByUser(id: number, user: IUser) {
+  async findByUser(user: IUser) {
     const requests = await this.db.maintenceRequest.findMany({
       where: { ownerOfReqId: user.id },
       include: {
