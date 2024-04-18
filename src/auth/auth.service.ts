@@ -38,10 +38,10 @@ export class AuthService {
         id: true,
         name: true,
         phone: true,
-        position: true,
-        MaintenceRequest: true,
-        createdAt: true,
-        updatedAt: true,
+        position: false,
+        MaintenceRequest: false,
+        createdAt: false,
+        updatedAt: false,
       },
     });
 
