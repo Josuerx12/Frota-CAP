@@ -43,6 +43,7 @@ export class UserService {
       .replaceAll('(', '')
       .replaceAll(')', '')
       .replaceAll('-', '')
+      .replaceAll(' ', '')
       .trim();
 
     const user = await this.db.user.create({
@@ -50,7 +51,7 @@ export class UserService {
         id: v4(),
         email: createUserDto.email,
         name: createUserDto.name,
-        phone: treatedUserPhone.trim(),
+        phone: treatedUserPhone,
         password: passwordHash,
       },
     });
