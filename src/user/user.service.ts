@@ -50,6 +50,7 @@ export class UserService {
           .replace('-', '')
           .replace(' ', ''),
         password: passwordHash,
+        ...createUserDto,
       },
     });
 
