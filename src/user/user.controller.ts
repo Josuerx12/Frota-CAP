@@ -26,11 +26,11 @@ export class UserController {
   findAll(@Req() req: Request) {
     return this.userService.findAll(req.user);
   }
-  @Get('/profile')
+  @Get('/profile/detail')
   profile(@Req() req: Request) {
     return this.userService.profile(req.user);
   }
-  @Get('/workshops')
+  @Get('/workshop/all')
   findWorkShops() {
     return this.userService.findWorkshops();
   }
