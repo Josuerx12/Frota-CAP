@@ -52,7 +52,6 @@ export class AuthGuardMiddleware implements NestMiddleware {
               id: true,
               name: true,
               phone: true,
-              position: true,
               MaintenceRequest: false,
               admin: true,
               frotas: true,
