@@ -31,21 +31,26 @@ export class UserService {
     }
 
     if (createUserDto.password !== createUserDto.confirmPassword) {
-      throw new BadRequestException('Senhas não conferem!', {
-        cause: new Error(),
-        description: 'confirmPassword',
+      throw new BadRequestException({
+        confirmPassword: 'Senhas não conferem!',
       });
     }
 
     const salt = await genSalt(10);
     const passwordHash = await hash(createUserDto.password, salt);
 
+    const treatedUserPhone = createUserDto.phone
+      .replaceAll('(', '')
+      .replaceAll(')', '')
+      .replaceAll('-', '')
+      .trim();
+
     const user = await this.db.user.create({
       data: {
         id: v4(),
         email: createUserDto.email,
         name: createUserDto.name,
-        phone: createUserDto.phone,
+        phone: treatedUserPhone,
         password: passwordHash,
       },
     });
