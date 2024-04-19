@@ -5,7 +5,7 @@ interface IUser {
   name: string;
   email: string;
   phone: string;
-  MaintenceRequest: IMaintenceRequest[];
+  MaintenceRequest?: IMaintenceRequest[];
   workshop?: boolean;
   requester?: boolean;
   admin?: boolean;

@@ -63,8 +63,7 @@ export class MaintanceRequestService {
   }
 
   async findAll(user: IUser) {
-    console.log(user);
-    if (!user.frotas && !user.workshop) {
+    if (!user.frotas && !user.workshop && !user.admin) {
       throw new BadRequestException(
         'Usuário não possui permissão para acessar todas solicitação de manutenção!',
       );
