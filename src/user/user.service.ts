@@ -50,7 +50,7 @@ export class UserService {
         id: v4(),
         email: createUserDto.email,
         name: createUserDto.name,
-        phone: treatedUserPhone,
+        phone: treatedUserPhone.trim(),
         password: passwordHash,
       },
     });
