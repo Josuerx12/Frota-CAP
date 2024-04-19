@@ -33,7 +33,7 @@ export class MaintanceRequestService {
     createMaintanceRequestDto: CreateMaintanceRequestDto,
     user: IUser,
   ) {
-    if (!user.position.includes('requester')) {
+    if (!user.requester) {
       throw new BadRequestException(
         'Você não possui permissão para realizar essa solicitação, fale com o suporte!',
       );
@@ -64,10 +64,7 @@ export class MaintanceRequestService {
 
   async findAll(user: IUser) {
     console.log(user);
-    if (
-      !user.position.includes('frotas') &&
-      !user.position.includes('oficina')
-    ) {
+    if (!user.frotas && !user.workshop) {
       throw new BadRequestException(
         'Usuário não possui permissão para acessar todas solicitação de manutenção!',
       );
@@ -102,11 +99,7 @@ export class MaintanceRequestService {
       );
     }
 
-    if (
-      request.ownerOfReqId !== user.id &&
-      !user.position.includes('frotas') &&
-      !user.position.includes('oficina')
-    ) {
+    if (request.ownerOfReqId !== user.id && !user.frotas && !user.workshop) {
       throw new BadRequestException(
         'Solicitação encontrada, porem você não tem permissão de vizualizar-la',
       );
@@ -156,9 +149,9 @@ export class MaintanceRequestService {
       );
     }
     if (
-      (!user.position.includes('frotas') && updatedCredentials.status === 1) ||
-      (!user.position.includes('frotas') && updatedCredentials.status === 2) ||
-      !user.position.includes('frotas')
+      (!user.frotas && updatedCredentials.status === 1) ||
+      (!user.frotas && updatedCredentials.status === 2) ||
+      !user.frotas
     ) {
       throw new BadRequestException(
         'Você não tem autorização para realizar essa requisição!',
@@ -166,11 +159,11 @@ export class MaintanceRequestService {
     }
 
     if (
-      (!user.position.includes('oficina') && updatedCredentials.status === 3) ||
-      (!user.position.includes('oficina') && updatedCredentials.status === 4) ||
-      (!user.position.includes('oficina') && updatedCredentials.status === 5) ||
-      (!user.position.includes('oficina') && updatedCredentials.status === 6) ||
-      (!user.position.includes('oficina') && updatedCredentials.status === 7)
+      (!user.workshop && updatedCredentials.status === 3) ||
+      (!user.workshop && updatedCredentials.status === 4) ||
+      (!user.workshop && updatedCredentials.status === 5) ||
+      (!user.workshop && updatedCredentials.status === 6) ||
+      (!user.workshop && updatedCredentials.status === 7)
     ) {
       throw new BadRequestException(
         'Você não tem autorização para realizar essa requisição!',
@@ -370,7 +363,7 @@ export class MaintanceRequestService {
   }
 
   async remove(id: number, user: IUser) {
-    if (user.position.includes('admin')) {
+    if (user.admin) {
       throw new BadRequestException(
         'Você não tem permissão para realizar está requisição!',
       );

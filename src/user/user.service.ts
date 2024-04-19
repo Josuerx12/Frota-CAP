@@ -10,7 +10,7 @@ export class UserService {
   constructor(private db: PrismaService) {}
 
   async create(createUserDto: CreateUserDto, userAuthenticated: IUser) {
-    if (!userAuthenticated.position.includes('admin')) {
+    if (!userAuthenticated.admin) {
       throw new BadRequestException(
         'Você não possui autorização para acessar essa rota!',
       );
@@ -57,7 +57,7 @@ export class UserService {
   }
 
   async findAll(userAuthenticated: IUser) {
-    if (!userAuthenticated.position.includes('admin')) {
+    if (!userAuthenticated.admin) {
       throw new BadRequestException(
         'Você não possui autorização para acessar essa rota!',
       );
@@ -69,10 +69,13 @@ export class UserService {
         id: true,
         name: true,
         phone: true,
-        position: true,
         MaintenceRequest: false,
         createdAt: true,
         updatedAt: true,
+        admin: true,
+        frotas: true,
+        requester: true,
+        workshop: true,
       },
       orderBy: {
         name: 'asc',
@@ -93,10 +96,13 @@ export class UserService {
         id: true,
         name: true,
         phone: true,
-        position: true,
         MaintenceRequest: true,
         createdAt: true,
         updatedAt: true,
+        admin: true,
+        frotas: true,
+        requester: true,
+        workshop: true,
       },
     });
 
@@ -116,14 +122,7 @@ export class UserService {
   async findWorkshops() {
     const usersWithWorkshops = await this.db.user.findMany({
       where: {
-        NOT: {
-          position: {
-            equals: [],
-          },
-        },
-        position: {
-          has: 'oficina',
-        },
+        workshop: true,
       },
     });
     return { workshops: usersWithWorkshops };
@@ -140,10 +139,13 @@ export class UserService {
         id: true,
         name: true,
         phone: true,
-        position: true,
         MaintenceRequest: false,
         createdAt: true,
         updatedAt: true,
+        admin: true,
+        frotas: true,
+        requester: true,
+        workshop: true,
       },
     });
 
@@ -163,33 +165,31 @@ export class UserService {
         },
       );
     }
-    if (user.id !== id && !user.position.includes('admin')) {
+    if (user.id !== id && !user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
         { cause: new Error(), description: 'authorization' },
       );
     }
 
-    if (updateUserDto.position && !user.position.includes('admin')) {
+    if (
+      (updateUserDto.admin ||
+        updateUserDto.frotas ||
+        updateUserDto.workshop ||
+        updateUserDto.requester) &&
+      !user.admin
+    ) {
       throw new BadRequestException({
-        position: 'Você não tem permissão para adicionar cargos ao usuário!',
+        auth: 'Você não tem permissão para adicionar cargos ao usuário!',
       });
     }
-    const newPositions = [];
-    if (updateUserDto.position) {
-      for (let i = 0; i < updateUserDto.position.length; i++) {
-        if (!userFromDb.position.includes(updateUserDto.position[i])) {
-          newPositions.push(updateUserDto.position[i]);
-        }
-      }
-    }
+
     await this.db.user.update({
       where: {
         id,
       },
       data: {
         ...updateUserDto,
-        position: [...userFromDb.position, ...newPositions],
       },
     });
 
@@ -209,7 +209,7 @@ export class UserService {
       );
     }
 
-    if (user.id !== id && !user.position.includes('admin')) {
+    if (user.id !== id && !user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
         { cause: new Error(), description: 'authorization' },

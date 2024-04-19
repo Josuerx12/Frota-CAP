@@ -9,7 +9,7 @@ export class VehicleService {
   constructor(private readonly db: PrismaService) {}
 
   async create(createVehicleDto: CreateVehicleDto, user: IUser) {
-    if (!user.position.includes('admin')) {
+    if (!user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
         { cause: new Error(), description: 'authorization' },
@@ -34,7 +34,7 @@ export class VehicleService {
   }
 
   async findAll(user: IUser) {
-    if (!user.position.includes('admin')) {
+    if (!user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
         { cause: new Error(), description: 'authorization' },
@@ -65,7 +65,7 @@ export class VehicleService {
   }
 
   async update(id: number, updateVehicleDto: UpdateVehicleDto, user: IUser) {
-    if (!user.position.includes('admin')) {
+    if (!user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
         { cause: new Error(), description: 'authorization' },
@@ -107,7 +107,7 @@ export class VehicleService {
   }
 
   async remove(id: number, user: IUser) {
-    if (!user.position.includes('admin')) {
+    if (!user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
         { cause: new Error(), description: 'authorization' },

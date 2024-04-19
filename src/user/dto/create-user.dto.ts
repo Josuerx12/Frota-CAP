@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsPhoneNumber,
   IsString,
@@ -20,9 +21,22 @@ export class CreateUserDto extends User {
 
   position: string[];
 
-  @IsStrongPassword({ minLength: 6, minUppercase: 1 })
+  @IsStrongPassword(
+    { minLength: 6, minUppercase: 1 },
+    {
+      message: 'Senha deve conter pelo menos 6 caracteres e 1 letra maiuscula',
+    },
+  )
   password: string;
 
-  @IsString()
+  @IsString({ message: 'Confirmação de senha é obrigatoria!' })
   confirmPassword: string;
+
+  @IsBoolean({ message: 'Admin deve ser um valor booleano' })
+  admin?: boolean;
+
+  @IsBoolean({ message: 'Admin deve ser um valor booleano' })
+  workshop?: boolean;
+  @IsBoolean({ message: 'Admin deve ser um valor booleano' })
+  frotas?: boolean;
 }

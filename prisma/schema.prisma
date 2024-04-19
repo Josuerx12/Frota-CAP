@@ -12,7 +12,10 @@ model User {
   email            String             @unique
   phone            String             @unique
   name             String
-  position         String[]           @default(["requester"])
+  requester        Boolean            @default(true)
+  workshop         Boolean?           @default(false)
+  frotas           Boolean?           @default(false)
+  admin            Boolean?           @default(false)
   password         String
   MaintenceRequest MaintenceRequest[]
   createdAt        DateTime           @default(now())

@@ -9,7 +9,7 @@ export class ProviderService {
   constructor(private readonly db: PrismaService) {}
 
   async create(credentials: CreateProviderDto, user: IUser) {
-    if (!user.position.includes('admin')) {
+    if (!user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
         { cause: new Error(), description: 'authorization' },
@@ -51,7 +51,7 @@ export class ProviderService {
   }
 
   async update(id: number, updateProviderDto: UpdateProviderDto, user: IUser) {
-    if (!user.position.includes('admin')) {
+    if (!user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
         { cause: new Error(), description: 'authorization' },
@@ -79,7 +79,7 @@ export class ProviderService {
   }
 
   async remove(id: number, user: IUser) {
-    if (!user.position.includes('admin')) {
+    if (!user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
         { cause: new Error(), description: 'authorization' },

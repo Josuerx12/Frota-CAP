@@ -5,8 +5,11 @@ interface IUser {
   name: string;
   email: string;
   phone: string;
-  position: string[];
   MaintenceRequest: IMaintenceRequest[];
+  workshop?: boolean;
+  requester?: boolean;
+  admin?: boolean;
+  frotas?: boolean;
 }
 
 export { IUser };
