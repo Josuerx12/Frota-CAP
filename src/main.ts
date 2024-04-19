@@ -9,6 +9,7 @@ async function bootstrap() {
     origin: true,
     credentials: true,
     preflightContinue: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   });
   await app.listen(3000);
 }
