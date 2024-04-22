@@ -50,7 +50,9 @@ export class UserService {
           ?.replace('-', '')
           ?.replace(' ', ''),
         password: passwordHash,
-        ...createUserDto,
+        admin: createUserDto.admin,
+        frotas: createUserDto.frotas,
+        workshop: createUserDto.workshop,
       },
     });
 
@@ -185,12 +187,35 @@ export class UserService {
       });
     }
 
+    if (updateUserDto.password !== updateUserDto.confirmPassword) {
+      throw new BadRequestException({
+        confirmPassword: 'Senhas não conferem!',
+      });
+    }
+
+    if (updateUserDto.password) {
+      const salt = await genSalt(10);
+      const passwordHash = await hash(updateUserDto.password, salt);
+
+      updateUserDto.password = passwordHash;
+    }
+
     await this.db.user.update({
       where: {
         id,
       },
       data: {
-        ...updateUserDto,
+        email: updateUserDto.email,
+        name: updateUserDto.name,
+        phone: updateUserDto.phone
+          ?.replace('(', '')
+          ?.replace(')', '')
+          ?.replace('-', '')
+          ?.replace(' ', ''),
+        password: updateUserDto.password,
+        admin: updateUserDto.admin,
+        frotas: updateUserDto.frotas,
+        workshop: updateUserDto.workshop,
       },
     });
 
