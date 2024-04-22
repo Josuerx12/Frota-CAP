@@ -41,8 +41,8 @@ export class VehicleController {
     return this.vehicleService.update(+id, updateVehicleDto, req.user);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string, @Req() req: Request) {
-    return this.vehicleService.remove(+id, req.user);
+  @Delete(':plate')
+  remove(@Param('plate') plate: string, @Req() req: Request) {
+    return this.vehicleService.remove(plate, req.user);
   }
 }

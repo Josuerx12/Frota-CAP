@@ -106,7 +106,7 @@ export class VehicleService {
     return `Veiculo ${vehicleEdited.name}, editado com sucesso!`;
   }
 
-  async remove(id: number, user: IUser) {
+  async remove(plate: string, user: IUser) {
     if (!user.admin) {
       throw new BadRequestException(
         'Você não possui permissão para realizar esta requisição!',
@@ -114,7 +114,7 @@ export class VehicleService {
       );
     }
     const vehiclesFromDb = await this.db.vehicle.findUnique({
-      where: { id },
+      where: { plate: plate },
     });
 
     if (!vehiclesFromDb) {
@@ -124,9 +124,7 @@ export class VehicleService {
     }
 
     const vehicleDeleted = await this.db.vehicle.delete({
-      where: {
-        id,
-      },
+      where: { plate: plate },
     });
 
     return `Veiculo ${vehicleDeleted.name}|${vehicleDeleted.plate}, removido com sucesso!`;

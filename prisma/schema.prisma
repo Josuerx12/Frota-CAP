@@ -31,14 +31,14 @@ model Provider {
 }
 
 model Vehicle {
-  id         Int                @id @default(autoincrement())
-  name       String
-  plate      String             @unique
-  providerId Int
-  provider   Provider           @relation(fields: [providerId], references: [id])
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
-  maintances MaintenceRequest[]
+  id               Int                @id @default(autoincrement())
+  name             String
+  plate            String             @unique
+  providerId       Int
+  provider         Provider           @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  MaintenceRequest MaintenceRequest[]
 }
 
 model budget {
@@ -48,7 +48,7 @@ model budget {
   maintenceId Int
   deadline    DateTime
   status      Int?             @default(0)
-  maintence   MaintenceRequest @relation(fields: [maintenceId], references: [id])
+  maintence   MaintenceRequest @relation(fields: [maintenceId], references: [id], onDelete: Cascade)
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 }
@@ -56,10 +56,9 @@ model budget {
 model MaintenceRequest {
   id                Int       @id @default(autoincrement())
   driverName        String
-  plate             String
   km                Int
   ownerOfReqId      String
-  ownerOfReq        User      @relation(fields: [ownerOfReqId], references: [id])
+  ownerOfReq        User      @relation(fields: [ownerOfReqId], references: [id], onDelete: Cascade)
   observation       String?
   workShopId        String?
   deadlineToForward DateTime?
@@ -76,5 +75,6 @@ model MaintenceRequest {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   budgets           budget[]
-  Vehicle           Vehicle?  @relation(fields: [plate], references: [plate])
+  Vehicle           Vehicle?  @relation(fields: [plate], references: [plate], onDelete: Cascade)
+  plate             String
 }
