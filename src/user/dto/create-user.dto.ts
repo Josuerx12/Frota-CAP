@@ -1,6 +1,7 @@
 import {
   IsBoolean,
   IsEmail,
+  IsOptional,
   IsPhoneNumber,
   IsString,
   IsStrongPassword,
@@ -32,11 +33,13 @@ export class CreateUserDto extends User {
   @IsString({ message: 'Confirmação de senha é obrigatoria!' })
   confirmPassword: string;
 
+  @IsOptional()
   @IsBoolean({ message: 'Admin deve ser um valor booleano' })
   admin?: boolean;
-
-  @IsBoolean({ message: 'Admin deve ser um valor booleano' })
+  @IsOptional()
+  @IsBoolean({ message: 'Workshop deve ser um valor booleano' })
   workshop?: boolean;
-  @IsBoolean({ message: 'Admin deve ser um valor booleano' })
+  @IsOptional()
+  @IsBoolean({ message: 'Frotas deve ser um valor booleano' })
   frotas?: boolean;
 }

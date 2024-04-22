@@ -12,7 +12,7 @@ model User {
   email            String             @unique
   phone            String             @unique
   name             String
-  requester        Boolean            @default(true)
+  requester        Boolean?           @default(true)
   workshop         Boolean?           @default(false)
   frotas           Boolean?           @default(false)
   admin            Boolean?           @default(false)

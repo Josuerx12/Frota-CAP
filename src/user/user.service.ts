@@ -45,10 +45,10 @@ export class UserService {
         email: createUserDto.email,
         name: createUserDto.name,
         phone: createUserDto.phone
-          .replace('(', '')
-          .replace(')', '')
-          .replace('-', '')
-          .replace(' ', ''),
+          ?.replace('(', '')
+          ?.replace(')', '')
+          ?.replace('-', '')
+          ?.replace(' ', ''),
         password: passwordHash,
         ...createUserDto,
       },
