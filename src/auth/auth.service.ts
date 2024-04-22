@@ -38,7 +38,6 @@ export class AuthService {
         id: true,
         name: true,
         phone: true,
-        position: false,
         MaintenceRequest: false,
         createdAt: false,
         updatedAt: false,

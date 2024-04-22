@@ -9,7 +9,6 @@ export class User implements Prisma.UserUncheckedCreateInput {
   email: string;
   phone: string;
   name: string;
-  position?: string[] | Prisma.UserCreatepositionInput;
   password: string;
   MaintenceRequest?: Prisma.MaintenceRequestUncheckedCreateNestedManyWithoutOwnerOfReqInput;
 }
