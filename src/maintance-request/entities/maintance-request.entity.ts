@@ -10,7 +10,7 @@ export class MaintanceRequest
   serviceStartAt?: string | Date;
   serviceTime?: number;
   deadlineToForward?: string | Date;
-  workShopId?: string;
+  workShopId: number;
   checkoutAt?: string | Date;
   checkoutBy?: string;
   deadlineToDeliver?: string | Date;

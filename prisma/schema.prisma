@@ -87,7 +87,7 @@ model MaintenceRequest {
   serviceEndAt      DateTime?
   serviceTime       Float?
   workShopId        Int
-  Workshop          Workshop  @relation(fields: [workShopId], references: [id])
+  Workshop          Workshop  @relation(fields: [workShopId], references: [id], onDelete: Cascade)
   deadlineToForward DateTime?
   status            Int?      @default(0)
   atendedBy         String?   @default("")
