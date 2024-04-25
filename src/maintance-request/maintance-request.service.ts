@@ -42,6 +42,7 @@ export class MaintanceRequestService {
     const request = await this.db.maintenceRequest.create({
       data: {
         ...createMaintanceRequestDto,
+        ownerOfReqId: user.id,
       },
       include: {
         budgets: true,

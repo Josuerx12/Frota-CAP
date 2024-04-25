@@ -24,12 +24,6 @@ export class CreateMaintanceRequestDto extends MaintanceRequest {
   })
   plate: string;
 
-  @IsUUID('4', {
-    message:
-      'ID do dono da solicitação de manutenção deve ser no formato uuidv4',
-  })
-  ownerOfReqId: string;
-
   @IsOptional()
   @IsString({ message: 'Nome de quem atendeu deve ser uma linha de letras.' })
   @Length(4, 255, {
