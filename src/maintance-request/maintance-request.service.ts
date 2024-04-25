@@ -236,6 +236,7 @@ export class MaintanceRequestService {
         },
         data: {
           ...updateMaintanceRequestDto,
+          atendedBy: user.name,
         },
         include: {
           budgets: true,
