@@ -34,7 +34,7 @@ export function sendMessage(request: IMaintenceRequest) {
                 ? ` <div>
     <p class='text-xl font-semibold'>⛔ Encaminhar Veículo para oficina ⛔</p>
     <p>O Veículo deverá ser encaminhado para oficina no dia
-      ${request.deadlineToDeviler}.</p>
+      ${request.deadlineToDeliver.toLocaleString('pt-BR')}.</p>
   </div>`
                 : request.status === 3
                   ? `<div>
