@@ -7,7 +7,7 @@ export class MaintanceRequest
   workShopId?: string;
   checkoutAt?: string | Date;
   checkoutBy?: string;
-  deadlineToDeviler?: string | Date;
+  deadlineToDeliver?: string | Date;
   delivered?: boolean;
   deliveredAt?: string | Date;
   driverName: string;

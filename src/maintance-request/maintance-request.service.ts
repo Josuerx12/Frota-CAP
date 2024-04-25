@@ -224,7 +224,7 @@ export class MaintanceRequestService {
       if (!updateMaintanceRequestDto.workShopId) {
         throw new BadRequestException('ID da oficina deve ser informado!');
       }
-      if (!updateMaintanceRequestDto.deadlineToDeviler) {
+      if (!updateMaintanceRequestDto.deadlineToDeliver) {
         throw new BadRequestException(
           'Data para entrega do veiculo é obrigatoria!',
         );

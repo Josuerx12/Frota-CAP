@@ -65,7 +65,7 @@ model MaintenceRequest {
   status            Int?      @default(0)
   atendedBy         String?   @default("")
   atendedAt         DateTime?
-  deadlineToDeviler DateTime?
+  deadlineToDeliver DateTime?
   delivered         Boolean   @default(false)
   deliveredAt       DateTime?
   finishedBy        String?   @default("")
