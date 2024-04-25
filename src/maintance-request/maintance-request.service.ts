@@ -39,6 +39,16 @@ export class MaintanceRequestService {
       );
     }
 
+    const vehicle = await this.db.vehicle.findUnique({
+      where: { plate: createMaintanceRequestDto.plate },
+    });
+
+    if (!vehicle) {
+      throw new BadRequestException({
+        vehicle: `Veiculo para placa: ${createMaintanceRequestDto.plate}, não encontrado!`,
+      });
+    }
+
     const request = await this.db.maintenceRequest.create({
       data: {
         ...createMaintanceRequestDto,
