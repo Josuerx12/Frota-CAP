@@ -203,6 +203,7 @@ export class MaintanceRequestService {
           id,
         },
         data: {
+          status: updateMaintanceRequestDto.status,
           atendedBy: user.name,
           atendedAt: new Date(),
         },
