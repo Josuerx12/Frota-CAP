@@ -52,7 +52,6 @@ export class UserService {
         password: passwordHash,
         admin: createUserDto.admin,
         frotas: createUserDto.frotas,
-        workshop: createUserDto.workshop,
       },
     });
 
@@ -78,7 +77,6 @@ export class UserService {
         admin: true,
         frotas: true,
         requester: true,
-        workshop: true,
       },
       orderBy: {
         name: 'asc',
@@ -105,7 +103,6 @@ export class UserService {
         admin: true,
         frotas: true,
         requester: true,
-        workshop: true,
       },
     });
 
@@ -120,15 +117,6 @@ export class UserService {
     }
 
     return { user };
-  }
-
-  async findWorkshops() {
-    const usersWithWorkshops = await this.db.user.findMany({
-      where: {
-        workshop: true,
-      },
-    });
-    return { workshops: usersWithWorkshops };
   }
 
   async profile(user: IUser) {
@@ -148,7 +136,6 @@ export class UserService {
         admin: true,
         frotas: true,
         requester: true,
-        workshop: true,
       },
     });
 
@@ -215,7 +202,6 @@ export class UserService {
         password: updateUserDto.password,
         admin: updateUserDto.admin,
         frotas: updateUserDto.frotas,
-        workshop: updateUserDto.workshop,
       },
     });
 

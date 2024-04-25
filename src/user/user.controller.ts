@@ -30,10 +30,6 @@ export class UserController {
   profile(@Req() req: Request) {
     return this.userService.profile(req.user);
   }
-  @Get('/workshop/all')
-  findWorkShops() {
-    return this.userService.findWorkshops();
-  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

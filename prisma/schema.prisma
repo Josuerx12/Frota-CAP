@@ -13,13 +13,35 @@ model User {
   phone            String             @unique
   name             String
   requester        Boolean?           @default(true)
-  workshop         Boolean?           @default(false)
   frotas           Boolean?           @default(false)
   admin            Boolean?           @default(false)
   password         String
   MaintenceRequest MaintenceRequest[]
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
+}
+
+model Address {
+  id         Int      @id @default(autoincrement())
+  street     String
+  number     String
+  cep        Int
+  city       String
+  state      String
+  workshopId Int      @unique
+  workshop   Workshop @relation(fields: [workshopId], references: [id])
+  country    String
+}
+
+model Workshop {
+  id               Int                @id @default(autoincrement())
+  name             String
+  email            String             @unique
+  password         String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  Address          Address?
+  MaintenceRequest MaintenceRequest[]
 }
 
 model Provider {
@@ -34,6 +56,7 @@ model Vehicle {
   id               Int                @id @default(autoincrement())
   name             String
   plate            String             @unique
+  active           Boolean            @default(true)
   providerId       Int
   provider         Provider           @relation(fields: [providerId], references: [id], onDelete: Cascade)
   createdAt        DateTime           @default(now())
@@ -63,7 +86,8 @@ model MaintenceRequest {
   serviceStartAt    DateTime?
   serviceEndAt      DateTime?
   serviceTime       Float?
-  workShopId        String?
+  workShopId        Int
+  Workshop          Workshop  @relation(fields: [workShopId], references: [id])
   deadlineToForward DateTime?
   status            Int?      @default(0)
   atendedBy         String?   @default("")
