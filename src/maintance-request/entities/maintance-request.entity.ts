@@ -5,6 +5,8 @@ export class MaintanceRequest
 {
   service: string;
   serviceEndAt?: string | Date;
+  scheduledAt?: string | Date;
+  timeToSchedule?: number;
   serviceStartAt?: string | Date;
   serviceTime?: number;
   deadlineToForward?: string | Date;

@@ -67,6 +67,9 @@ model MaintenceRequest {
   deadlineToForward DateTime?
   status            Int?      @default(0)
   atendedBy         String?   @default("")
+  atendedAt         DateTime?
+  timeToSchedule    Float?
+  scheduledAt       DateTime?
   deadlineToDeliver DateTime?
   delivered         Boolean   @default(false)
   deliveredAt       DateTime?
