@@ -131,19 +131,6 @@ export class MaintanceRequestService {
     return { requests };
   }
 
-  async findByWorkshop(user: IUser) {
-    const requests = await this.db.maintenceRequest.findMany({
-      where: { workShopId: user.id },
-      include: {
-        budgets: true,
-        ownerOfReq: true,
-        Vehicle: true,
-      },
-    });
-
-    return { requests };
-  }
-
   basicValidations(
     request: IMaintenceRequest,
     updatedCredentials: UpdateMaintanceRequestDto,
