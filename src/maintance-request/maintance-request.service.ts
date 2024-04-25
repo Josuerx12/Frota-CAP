@@ -232,9 +232,7 @@ export class MaintanceRequestService {
 
       const dateNow = Date.now();
 
-      const spendedTime =
-        (dateNow - new Date(requestFromDb.atendedAt).getTime()) /
-        (1000 * 60 * 60);
+      const spendedTime = dateNow - new Date(requestFromDb.atendedAt).getTime();
 
       const res = await this.db.maintenceRequest.update({
         where: {
@@ -245,6 +243,9 @@ export class MaintanceRequestService {
           atendedBy: user.name,
           scheduledAt: new Date(dateNow),
           timeToSchedule: spendedTime,
+          deadlineToDeliver: new Date(
+            updateMaintanceRequestDto.deadlineToDeliver,
+          ),
         },
         include: {
           budgets: true,
@@ -335,8 +336,7 @@ export class MaintanceRequestService {
 
       const endDate = Date.now();
 
-      const spendedTime =
-        (endDate - new Date(serviceStartAt).getTime()) / (1000 * 60 * 60);
+      const spendedTime = endDate - new Date(serviceStartAt).getTime();
 
       const res = await this.db.maintenceRequest.update({
         where: {
