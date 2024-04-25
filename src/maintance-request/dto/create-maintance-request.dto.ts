@@ -23,12 +23,11 @@ export class CreateMaintanceRequestDto extends MaintanceRequest {
   })
   plate: string;
 
-  @IsOptional()
-  @IsString({ message: 'Nome de quem atendeu deve ser uma linha de letras.' })
+  @IsString({ message: 'Serviço da solicitação é uma informação obrigatorio.' })
   @Length(4, 255, {
     message: 'Observação deve ter de 4 a 255 letras e ou numeros.',
   })
-  observation?: string;
+  service: string;
 
   @IsOptional()
   @IsInt({ message: 'Status deve ser informado através de um numero!' })

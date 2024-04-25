@@ -205,7 +205,6 @@ export class MaintanceRequestService {
         data: {
           status: updateMaintanceRequestDto.status,
           atendedBy: user.name,
-          atendedAt: new Date(),
         },
         include: {
           budgets: true,
@@ -307,6 +306,7 @@ export class MaintanceRequestService {
         },
         data: {
           ...updateMaintanceRequestDto,
+          serviceStartAt: new Date(Date.now()),
         },
         include: {
           budgets: true,
@@ -322,12 +322,21 @@ export class MaintanceRequestService {
       });
     }
     if (updateMaintanceRequestDto.status === 6) {
+      const { serviceStartAt } = requestFromDb;
+
+      const endDate = Date.now();
+
+      const spendedTime =
+        (endDate - new Date(serviceStartAt).getTime()) / (1000 * 60 * 60);
+
       const res = await this.db.maintenceRequest.update({
         where: {
           id,
         },
         data: {
           ...updateMaintanceRequestDto,
+          serviceTime: spendedTime,
+          serviceEndAt: new Date(endDate),
         },
         include: {
           budgets: true,

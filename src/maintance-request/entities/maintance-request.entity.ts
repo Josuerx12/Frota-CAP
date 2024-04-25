@@ -3,6 +3,10 @@ import { Prisma } from '@prisma/client';
 export class MaintanceRequest
   implements Prisma.MaintenceRequestUncheckedCreateInput
 {
+  service: string;
+  serviceEndAt?: string | Date;
+  serviceStartAt?: string | Date;
+  serviceTime?: number;
   deadlineToForward?: string | Date;
   workShopId?: string;
   checkoutAt?: string | Date;

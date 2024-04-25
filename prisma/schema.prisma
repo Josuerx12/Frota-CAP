@@ -59,12 +59,14 @@ model MaintenceRequest {
   km                Int
   ownerOfReqId      String
   ownerOfReq        User      @relation(fields: [ownerOfReqId], references: [id], onDelete: Cascade)
-  observation       String?
+  service           String
+  serviceStartAt    DateTime?
+  serviceEndAt      DateTime?
+  serviceTime       Float?
   workShopId        String?
   deadlineToForward DateTime?
   status            Int?      @default(0)
   atendedBy         String?   @default("")
-  atendedAt         DateTime?
   deadlineToDeliver DateTime?
   delivered         Boolean   @default(false)
   deliveredAt       DateTime?
