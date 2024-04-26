@@ -27,6 +27,11 @@ export class WorkshopController {
     return this.workshopService.findAll();
   }
 
+  @Get('/detail')
+  loggedWorkshopDetails(@Req() req: Request) {
+    return this.workshopService.loggedWorkshopDetails(req.workshop);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.workshopService.findOne(+id);

@@ -4,6 +4,7 @@ import { UpdateWorkshopDto } from './dto/update-workshop.dto';
 import { PrismaService } from 'src/prisma.service';
 import { genSalt, hash } from 'bcryptjs';
 import { IUser } from 'src/interfaces/User';
+import { IWorkshop } from 'src/interfaces/Workshop';
 
 @Injectable()
 export class WorkshopService {
@@ -59,6 +60,24 @@ export class WorkshopService {
   async findOne(id: number) {
     const workshop = await this.db.workshop.findUnique({
       where: { id },
+      select: {
+        Address: true,
+        createdAt: true,
+        email: true,
+        id: true,
+        MaintenceRequest: true,
+        name: true,
+        password: false,
+        updatedAt: true,
+      },
+    });
+
+    return { workshop };
+  }
+
+  async loggedWorkshopDetails(ws: IWorkshop) {
+    const workshop = await this.db.workshop.findUnique({
+      where: { id: ws.id },
       select: {
         Address: true,
         createdAt: true,
