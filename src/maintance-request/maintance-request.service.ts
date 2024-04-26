@@ -229,6 +229,7 @@ export class MaintanceRequestService {
         },
         data: {
           ...updateMaintanceRequestDto,
+          workShopId: updateMaintanceRequestDto.workShopId,
           atendedBy: user.name,
           scheduledAt: new Date(dateNow),
           timeToSchedule: spendedTime,
@@ -240,6 +241,7 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
+          Workshop: true,
         },
       });
       await this.mail.send(res.Owner.email, res);
