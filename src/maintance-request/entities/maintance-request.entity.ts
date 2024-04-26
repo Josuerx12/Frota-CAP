@@ -20,7 +20,7 @@ export class MaintanceRequest
   id?: number;
   plate: string;
   km: number;
-  ownerOfReqId: string;
+  ownerId?: string;
   observation?: string;
   status?: number;
   atendedBy?: string;

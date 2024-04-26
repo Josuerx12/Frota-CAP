@@ -77,17 +77,16 @@ model budget {
 }
 
 model MaintenceRequest {
-  id                Int       @id @default(autoincrement())
-  driverName        String
-  km                Int
-  ownerOfReqId      String
-  ownerOfReq        User      @relation(fields: [ownerOfReqId], references: [id], onDelete: Cascade)
+  id         Int    @id @default(autoincrement())
+  driverName String
+  km         Int
+
   service           String
   serviceStartAt    DateTime?
   serviceEndAt      DateTime?
   serviceTime       Float?
-  workShopId        Int
-  Workshop          Workshop  @relation(fields: [workShopId], references: [id], onDelete: Cascade)
+  workShopId        Int?
+  Workshop          Workshop? @relation(fields: [workShopId], references: [id], onDelete: Cascade)
   deadlineToForward DateTime?
   status            Int?      @default(0)
   atendedBy         String?   @default("")
@@ -106,4 +105,6 @@ model MaintenceRequest {
   budgets           budget[]
   Vehicle           Vehicle?  @relation(fields: [plate], references: [plate], onDelete: Cascade)
   plate             String
+  Owner             User?     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId           String?
 }

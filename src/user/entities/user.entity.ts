@@ -10,5 +10,5 @@ export class User implements Prisma.UserUncheckedCreateInput {
   phone: string;
   name: string;
   password: string;
-  MaintenceRequest?: Prisma.MaintenceRequestUncheckedCreateNestedManyWithoutOwnerOfReqInput;
+  MaintenceRequest?: Prisma.MaintenceRequestUncheckedCreateNestedManyWithoutOwnerInput;
 }

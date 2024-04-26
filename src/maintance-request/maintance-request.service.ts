@@ -53,20 +53,20 @@ export class MaintanceRequestService {
     const request = await this.db.maintenceRequest.create({
       data: {
         ...createMaintanceRequestDto,
-        ownerOfReqId: user.id,
+        ownerId: user.id,
       },
       include: {
         budgets: true,
         Vehicle: true,
-        ownerOfReq: true,
+        Owner: true,
       },
     });
 
-    await this.mail.send(request.ownerOfReq.email, request);
+    await this.mail.send(request.Owner.email, request);
 
     await this.api
       .post('/send-text', {
-        phone: `55${request.ownerOfReq.phone}`,
+        phone: `55${request.Owner.phone}`,
         message: `*Frota CAP : Manutenção de Veículos*\n\n*🆕 Seu chamado Nº ${request.id} foi recebido 🆕*\n\nIremos agendar seu chamado na Oficina`,
       })
       .catch((err) => console.log(err.message));
@@ -84,7 +84,7 @@ export class MaintanceRequestService {
     const requests = await this.db.maintenceRequest.findMany({
       include: {
         budgets: true,
-        ownerOfReq: true,
+        Owner: true,
         Vehicle: true,
       },
     });
@@ -99,7 +99,7 @@ export class MaintanceRequestService {
       },
       include: {
         budgets: true,
-        ownerOfReq: true,
+        Owner: true,
         Vehicle: true,
       },
     });
@@ -110,7 +110,7 @@ export class MaintanceRequestService {
       );
     }
 
-    if (request.ownerOfReqId !== user.id && !user.frotas && !workshop) {
+    if (request.ownerId !== user.id && !user.frotas && !workshop) {
       throw new BadRequestException(
         'Solicitação encontrada, porem você não tem permissão de vizualizar-la',
       );
@@ -121,10 +121,10 @@ export class MaintanceRequestService {
 
   async findByUser(user: IUser) {
     const requests = await this.db.maintenceRequest.findMany({
-      where: { ownerOfReqId: user.id },
+      where: { ownerId: user.id },
       include: {
         budgets: true,
-        ownerOfReq: true,
+        Owner: true,
         Vehicle: true,
       },
     });
@@ -179,7 +179,7 @@ export class MaintanceRequestService {
       where: { id },
       include: {
         budgets: true,
-        ownerOfReq: true,
+        Owner: true,
         Vehicle: true,
       },
     });
@@ -198,13 +198,13 @@ export class MaintanceRequestService {
         },
         include: {
           budgets: true,
-          ownerOfReq: true,
+          Owner: true,
           Vehicle: true,
         },
       });
-      await this.mail.send(res.ownerOfReq.email, res);
+      await this.mail.send(res.Owner.email, res);
       await this.api.post('/send-text', {
-        phone: `55${res.ownerOfReq.phone}`,
+        phone: `55${res.Owner.phone}`,
         message: this.wppMessageTemplate(res),
       });
     }
@@ -238,13 +238,13 @@ export class MaintanceRequestService {
         },
         include: {
           budgets: true,
-          ownerOfReq: true,
+          Owner: true,
           Vehicle: true,
         },
       });
-      await this.mail.send(res.ownerOfReq.email, res);
+      await this.mail.send(res.Owner.email, res);
       await this.api.post('/send-text', {
-        phone: `55${res.ownerOfReq.phone}`,
+        phone: `55${res.Owner.phone}`,
         message: this.wppMessageTemplate(res),
       });
     }
@@ -261,14 +261,14 @@ export class MaintanceRequestService {
         },
         include: {
           budgets: true,
-          ownerOfReq: true,
+          Owner: true,
           Vehicle: true,
         },
       });
 
-      await this.mail.send(res.ownerOfReq.email, res);
+      await this.mail.send(res.Owner.email, res);
       await this.api.post('/send-text', {
-        phone: `55${res.ownerOfReq.phone}`,
+        phone: `55${res.Owner.phone}`,
         message: this.wppMessageTemplate(res),
       });
     }
@@ -282,13 +282,13 @@ export class MaintanceRequestService {
         },
         include: {
           budgets: true,
-          ownerOfReq: true,
+          Owner: true,
           Vehicle: true,
         },
       });
-      await this.mail.send(res.ownerOfReq.email, res);
+      await this.mail.send(res.Owner.email, res);
       await this.api.post('/send-text', {
-        phone: `55${res.ownerOfReq.phone}`,
+        phone: `55${res.Owner.phone}`,
         message: this.wppMessageTemplate(res),
       });
     }
@@ -309,14 +309,14 @@ export class MaintanceRequestService {
         },
         include: {
           budgets: true,
-          ownerOfReq: true,
+          Owner: true,
           Vehicle: true,
         },
       });
 
-      await this.mail.send(res.ownerOfReq.email, res);
+      await this.mail.send(res.Owner.email, res);
       await this.api.post('/send-text', {
-        phone: `55${res.ownerOfReq.phone}`,
+        phone: `55${res.Owner.phone}`,
         message: this.wppMessageTemplate(res),
       });
     }
@@ -338,14 +338,14 @@ export class MaintanceRequestService {
         },
         include: {
           budgets: true,
-          ownerOfReq: true,
+          Owner: true,
           Vehicle: true,
         },
       });
 
-      await this.mail.send(res.ownerOfReq.email, res);
+      await this.mail.send(res.Owner.email, res);
       await this.api.post('/send-text', {
-        phone: `55${res.ownerOfReq.phone}`,
+        phone: `55${res.Owner.phone}`,
         message: this.wppMessageTemplate(res),
       });
     }
@@ -366,14 +366,14 @@ export class MaintanceRequestService {
         },
         include: {
           budgets: true,
-          ownerOfReq: true,
+          Owner: true,
           Vehicle: true,
         },
       });
 
-      await this.mail.send(res.ownerOfReq.email, res);
+      await this.mail.send(res.Owner.email, res);
       await this.api.post('/send-text', {
-        phone: `55${res.ownerOfReq.phone}`,
+        phone: `55${res.Owner.phone}`,
         message: this.wppMessageTemplate(res),
       });
     }

@@ -3,7 +3,7 @@ interface IMaintenceRequest {
   plate: string;
   driverName: string;
   km: number;
-  ownerOfReqId: string;
+  ownerId: string;
   observation?: string;
   deadlineToForward?: Date | string;
   deadlineToDeliver?: Date | string;
