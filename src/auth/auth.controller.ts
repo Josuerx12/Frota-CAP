@@ -10,4 +10,8 @@ export class AuthController {
   login(@Body() credentials: LoginCredetialsDto) {
     return this.authService.login(credentials);
   }
+  @Post('login/ws')
+  loginWorkshop(@Body() credentials: LoginCredetialsDto) {
+    return this.authService.loginWorkshop(credentials);
+  }
 }

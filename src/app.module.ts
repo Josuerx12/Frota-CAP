@@ -25,6 +25,12 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthGuardMiddleware)
-      .forRoutes('/user', '/provider', '/vehicle', '/maintance-request');
+      .forRoutes(
+        '/user',
+        '/provider',
+        '/vehicle',
+        '/maintance-request',
+        '/workshop',
+      );
   }
 }

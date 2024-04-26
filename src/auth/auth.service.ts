@@ -44,7 +44,47 @@ export class AuthService {
       },
     });
 
-    const token = sign(user, process.env.SECRET);
+    const token = sign({ user }, process.env.SECRET);
+
+    return { token };
+  }
+  async loginWorkshop(credentials: LoginCredetialsDto) {
+    const workshopFromDb = await this.db.workshop.findUnique({
+      where: { email: credentials.email },
+    });
+
+    if (!workshopFromDb) {
+      throw new BadRequestException({
+        email: 'Nenhum localizado para o email informado! Solicite seu acesso!',
+      });
+    }
+
+    const verifiedWorkshop = await compare(
+      credentials.password,
+      workshopFromDb.password,
+    );
+
+    if (!verifiedWorkshop) {
+      throw new BadRequestException({
+        password: 'Senha incorreta, corrija e tente novamente!',
+      });
+    }
+
+    const workshop = await this.db.workshop.findUnique({
+      where: { id: workshopFromDb.id },
+      select: {
+        email: true,
+        password: false,
+        id: true,
+        name: true,
+        Address: true,
+        MaintenceRequest: false,
+        createdAt: false,
+        updatedAt: false,
+      },
+    });
+
+    const token = sign({ workshop }, process.env.SECRET);
 
     return { token };
   }

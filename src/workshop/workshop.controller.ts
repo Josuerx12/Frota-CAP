@@ -1,15 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+} from '@nestjs/common';
 import { WorkshopService } from './workshop.service';
 import { CreateWorkshopDto } from './dto/create-workshop.dto';
 import { UpdateWorkshopDto } from './dto/update-workshop.dto';
+import { Request } from 'express';
 
 @Controller('workshop')
 export class WorkshopController {
   constructor(private readonly workshopService: WorkshopService) {}
 
   @Post()
-  create(@Body() createWorkshopDto: CreateWorkshopDto) {
-    return this.workshopService.create(createWorkshopDto);
+  create(@Body() createWorkshopDto: CreateWorkshopDto, @Req() req: Request) {
+    return this.workshopService.create(createWorkshopDto, req.user);
   }
 
   @Get()
@@ -23,12 +33,16 @@ export class WorkshopController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWorkshopDto: UpdateWorkshopDto) {
-    return this.workshopService.update(+id, updateWorkshopDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateWorkshopDto: UpdateWorkshopDto,
+    @Req() req: Request,
+  ) {
+    return this.workshopService.update(+id, updateWorkshopDto, req.user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workshopService.remove(+id);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    return this.workshopService.remove(+id, req.user);
   }
 }

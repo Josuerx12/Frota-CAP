@@ -29,7 +29,7 @@ model Address {
   city       String
   state      String
   workshopId Int      @unique
-  workshop   Workshop @relation(fields: [workshopId], references: [id])
+  workshop   Workshop @relation(fields: [workshopId], references: [id], onDelete: Cascade)
   country    String
 }
 

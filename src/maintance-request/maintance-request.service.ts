@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma.service';
 import { EmailService } from '../email.service';
 import { IMaintenceRequest } from 'src/interfaces/MaintenceRequest';
 import axios, { AxiosInstance } from 'axios';
+import { IWorkshop } from 'src/interfaces/Workshop';
 
 @Injectable()
 export class MaintanceRequestService {
@@ -73,8 +74,8 @@ export class MaintanceRequestService {
     return `Solicitação numero: ${request.id}, criada com sucesso!`;
   }
 
-  async findAll(user: IUser) {
-    if (!user.frotas && !user.workshop && !user.admin) {
+  async findAll(user: IUser, workshop: IWorkshop) {
+    if (!user.frotas && !workshop && !user.admin) {
       throw new BadRequestException(
         'Usuário não possui permissão para acessar todas solicitação de manutenção!',
       );
@@ -91,7 +92,7 @@ export class MaintanceRequestService {
     return { requests };
   }
 
-  async findOne(id: number, user: IUser) {
+  async findOne(id: number, user: IUser, workshop: IWorkshop) {
     const request = await this.db.maintenceRequest.findUnique({
       where: {
         id,
@@ -109,7 +110,7 @@ export class MaintanceRequestService {
       );
     }
 
-    if (request.ownerOfReqId !== user.id && !user.frotas && !user.workshop) {
+    if (request.ownerOfReqId !== user.id && !user.frotas && !workshop) {
       throw new BadRequestException(
         'Solicitação encontrada, porem você não tem permissão de vizualizar-la',
       );
@@ -134,7 +135,8 @@ export class MaintanceRequestService {
   basicValidations(
     request: IMaintenceRequest,
     updatedCredentials: UpdateMaintanceRequestDto,
-    user: IUser,
+    user?: IUser,
+    workshop?: IWorkshop,
   ) {
     if (
       updatedCredentials.status < 0 ||
@@ -156,11 +158,11 @@ export class MaintanceRequestService {
     }
 
     if (
-      (!user.workshop && updatedCredentials.status === 3) ||
-      (!user.workshop && updatedCredentials.status === 4) ||
-      (!user.workshop && updatedCredentials.status === 5) ||
-      (!user.workshop && updatedCredentials.status === 6) ||
-      (!user.workshop && updatedCredentials.status === 7)
+      (!workshop && updatedCredentials.status === 3) ||
+      (!workshop && updatedCredentials.status === 4) ||
+      (!workshop && updatedCredentials.status === 5) ||
+      (!workshop && updatedCredentials.status === 6) ||
+      (!workshop && updatedCredentials.status === 7)
     ) {
       throw new BadRequestException(
         'Você não tem autorização para realizar essa requisição!',

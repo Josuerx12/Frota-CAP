@@ -32,7 +32,7 @@ export class MaintanceRequestController {
 
   @Get()
   findAll(@Req() req: Request) {
-    return this.maintanceRequestService.findAll(req.user);
+    return this.maintanceRequestService.findAll(req.user, req.workshop);
   }
   @Get('/user')
   findByUser(@Req() req: Request) {
@@ -41,7 +41,7 @@ export class MaintanceRequestController {
 
   @Get(':id')
   findOne(@Param('id') id: string, @Req() req: Request) {
-    return this.maintanceRequestService.findOne(+id, req.user);
+    return this.maintanceRequestService.findOne(+id, req.user, req.workshop);
   }
 
   @Patch(':id')
