@@ -161,9 +161,9 @@ export class MaintanceRequestService {
       );
     }
     if (
-      (!user.frotas && updatedCredentials.status === 1) ||
-      (!user.frotas && updatedCredentials.status === 2) ||
-      !user.frotas
+      (user && !user.frotas && updatedCredentials.status === 1) ||
+      (user && !user.frotas && updatedCredentials.status === 2) ||
+      (user && !user.frotas)
     ) {
       throw new BadRequestException(
         'Você não tem autorização para realizar essa requisição!',
