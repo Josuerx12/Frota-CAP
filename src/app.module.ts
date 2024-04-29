@@ -9,6 +9,7 @@ import { AuthGuardMiddleware } from './auth-guard/auth-guard.middleware';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { MaintanceRequestModule } from './maintance-request/maintance-request.module';
 import { WorkshopModule } from './workshop/workshop.module';
+import { BudgetModule } from './budget/budget.module';
 @Module({
   imports: [
     UserModule,
@@ -17,6 +18,7 @@ import { WorkshopModule } from './workshop/workshop.module';
     VehicleModule,
     MaintanceRequestModule,
     WorkshopModule,
+    BudgetModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
@@ -31,6 +33,7 @@ export class AppModule implements NestModule {
         '/vehicle',
         '/maintance-request',
         '/workshop',
+        '/budget',
       );
   }
 }

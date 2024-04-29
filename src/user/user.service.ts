@@ -16,6 +16,8 @@ export class UserService {
       );
     }
 
+    console.log(createUserDto);
+
     const allUsers = await this.db.user.findMany();
 
     if (allUsers.find((user) => user.email === createUserDto.email)) {

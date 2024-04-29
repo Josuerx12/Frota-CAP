@@ -58,7 +58,7 @@ model Vehicle {
   plate            String             @unique
   active           Boolean            @default(true)
   providerId       Int
-  provider         Provider           @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  provider         Provider           @relation(fields: [providerId], references: [id], onDelete: NoAction)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   MaintenceRequest MaintenceRequest[]
@@ -67,10 +67,10 @@ model Vehicle {
 model budget {
   id          Int               @id @default(autoincrement())
   url         String
-  key         String
+  key         String?
   maintenceId Int?
   status      Int?              @default(0)
-  maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: Cascade)
+  maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: SetNull)
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 }
@@ -85,7 +85,7 @@ model MaintenceRequest {
   serviceEndAt      DateTime?
   serviceTime       Float?
   workShopId        Int?
-  Workshop          Workshop? @relation(fields: [workShopId], references: [id], onDelete: Cascade)
+  Workshop          Workshop? @relation(fields: [workShopId], references: [id], onDelete: NoAction)
   deadlineToForward DateTime?
   status            Int?      @default(0)
   atendedBy         String?   @default("")
@@ -102,8 +102,8 @@ model MaintenceRequest {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   budgets           budget[]
-  Vehicle           Vehicle?  @relation(fields: [plate], references: [plate], onDelete: Cascade)
+  Vehicle           Vehicle?  @relation(fields: [plate], references: [plate], onDelete: NoAction)
   plate             String
-  Owner             User?     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  Owner             User?     @relation(fields: [ownerId], references: [id], onDelete: NoAction)
   ownerId           String?
 }
