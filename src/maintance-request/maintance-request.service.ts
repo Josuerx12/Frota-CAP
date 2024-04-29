@@ -165,7 +165,7 @@ export class MaintanceRequestService {
       (user && !user.frotas && updatedCredentials.status === 2)
     ) {
       throw new BadRequestException(
-        'Você não tem autorização para realizar essa requisição!',
+        'Você não tem autorização para realizar essa requisição !',
       );
     }
 
@@ -186,6 +186,7 @@ export class MaintanceRequestService {
     id: number,
     updateMaintanceRequestDto: UpdateMaintanceRequestDto,
     user: IUser,
+    workshop: IWorkshop,
   ) {
     const requestFromDb = await this.db.maintenceRequest.findUnique({
       where: { id },
@@ -196,7 +197,12 @@ export class MaintanceRequestService {
       },
     });
 
-    this.basicValidations(requestFromDb, updateMaintanceRequestDto, user);
+    this.basicValidations(
+      requestFromDb,
+      updateMaintanceRequestDto,
+      user,
+      workshop,
+    );
 
     if (updateMaintanceRequestDto.status === 1) {
       const res = await this.db.maintenceRequest.update({

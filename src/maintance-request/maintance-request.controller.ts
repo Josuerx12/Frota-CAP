@@ -58,6 +58,7 @@ export class MaintanceRequestController {
       +id,
       updateMaintanceRequestDto,
       req.user,
+      req.workshop,
     );
   }
 
