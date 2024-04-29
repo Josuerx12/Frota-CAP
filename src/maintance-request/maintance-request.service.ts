@@ -206,6 +206,8 @@ export class MaintanceRequestService {
       workshop,
     );
 
+    Number(updateMaintanceRequestDto.status);
+
     if (updateMaintanceRequestDto.status === 1) {
       const res = await this.db.maintenceRequest.update({
         where: {
@@ -294,7 +296,7 @@ export class MaintanceRequestService {
         message: this.wppMessageTemplate(res),
       });
     }
-    if (Number(updateMaintanceRequestDto.status) === 4) {
+    if (updateMaintanceRequestDto.status === 4) {
       const s3 = new S3({
         credentials: {
           accessKeyId: process.env.AWS_KEY,
