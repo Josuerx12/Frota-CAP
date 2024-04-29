@@ -308,12 +308,14 @@ export class MaintanceRequestService {
             Bucket: process.env.BUDGET_BUCKET,
             Key: Date.now() + file.originalname,
             Body: file.buffer,
+            ACL: 'public-read',
           })
           .promise();
 
         await this.db.budget.create({
           data: {
             maintenceId: requestFromDb.id,
+            key: fileUploaded.Key,
             url: fileUploaded.Location,
           },
         });

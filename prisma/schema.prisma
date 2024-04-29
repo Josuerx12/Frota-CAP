@@ -67,6 +67,7 @@ model Vehicle {
 model budget {
   id          Int               @id @default(autoincrement())
   url         String
+  key         String
   maintenceId Int?
   status      Int?              @default(0)
   maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: Cascade)
