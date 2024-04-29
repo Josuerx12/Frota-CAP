@@ -65,15 +65,13 @@ model Vehicle {
 }
 
 model budget {
-  id          Int              @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   url         String
-  path        String
-  maintenceId Int
-  deadline    DateTime
-  status      Int?             @default(0)
-  maintence   MaintenceRequest @relation(fields: [maintenceId], references: [id], onDelete: Cascade)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  maintenceId Int?
+  status      Int?              @default(0)
+  maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: Cascade)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 }
 
 model MaintenceRequest {

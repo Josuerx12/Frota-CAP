@@ -7,11 +7,14 @@ import {
   Param,
   Delete,
   Req,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { MaintanceRequestService } from './maintance-request.service';
 import { CreateMaintanceRequestDto } from './dto/create-maintance-request.dto';
 import { UpdateMaintanceRequestDto } from './dto/update-maintance-request.dto';
 import { Request } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('maintance-request')
 export class MaintanceRequestController {
@@ -49,16 +52,19 @@ export class MaintanceRequestController {
   }
 
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('budget'))
   update(
     @Param('id') id: string,
     @Body() updateMaintanceRequestDto: UpdateMaintanceRequestDto,
     @Req() req: Request,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     return this.maintanceRequestService.update(
       +id,
       updateMaintanceRequestDto,
       req.user,
       req.workshop,
+      file,
     );
   }
 

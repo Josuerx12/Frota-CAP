@@ -30,7 +30,7 @@ export class CreateMaintanceRequestDto extends MaintanceRequest {
   service: string;
 
   @IsOptional()
-  @IsInt({ message: 'Status deve ser informado através de um numero!' })
+  @IsString({ message: 'Status deve ser informado!' })
   status?: number;
 
   @IsOptional()

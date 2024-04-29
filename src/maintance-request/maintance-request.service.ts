@@ -7,6 +7,7 @@ import { EmailService } from '../email.service';
 import { IMaintenceRequest } from 'src/interfaces/MaintenceRequest';
 import axios, { AxiosInstance } from 'axios';
 import { IWorkshop } from 'src/interfaces/Workshop';
+import { S3 } from 'aws-sdk';
 
 @Injectable()
 export class MaintanceRequestService {
@@ -187,6 +188,7 @@ export class MaintanceRequestService {
     updateMaintanceRequestDto: UpdateMaintanceRequestDto,
     user: IUser,
     workshop: IWorkshop,
+    file: Express.Multer.File,
   ) {
     const requestFromDb = await this.db.maintenceRequest.findUnique({
       where: { id },
@@ -292,13 +294,37 @@ export class MaintanceRequestService {
         message: this.wppMessageTemplate(res),
       });
     }
-    if (updateMaintanceRequestDto.status === 4) {
+    if (Number(updateMaintanceRequestDto.status) === 4) {
+      const s3 = new S3({
+        credentials: {
+          accessKeyId: process.env.AWS_KEY,
+          secretAccessKey: process.env.AWS_SECRET,
+        },
+      });
+
+      if (file) {
+        const fileUploaded = await s3
+          .upload({
+            Bucket: process.env.BUDGET_BUCKET,
+            Key: Date.now() + file.originalname,
+            Body: file.buffer,
+          })
+          .promise();
+
+        await this.db.budget.create({
+          data: {
+            maintenceId: requestFromDb.id,
+            url: fileUploaded.Location,
+          },
+        });
+      }
+
       const res = await this.db.maintenceRequest.update({
         where: {
           id,
         },
         data: {
-          ...updateMaintanceRequestDto,
+          status: 4,
         },
         include: {
           budgets: true,
