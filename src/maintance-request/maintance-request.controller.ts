@@ -38,6 +38,10 @@ export class MaintanceRequestController {
   findByUser(@Req() req: Request) {
     return this.maintanceRequestService.findByUser(req.user);
   }
+  @Get('/ws')
+  findByWorkshop(@Req() req: Request) {
+    return this.maintanceRequestService.findByWorkshop(req.workshop);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string, @Req() req: Request) {
