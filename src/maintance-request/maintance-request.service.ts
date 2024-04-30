@@ -198,6 +198,7 @@ export class MaintanceRequestService {
         Vehicle: true,
       },
     });
+    Number(updateMaintanceRequestDto.status);
 
     this.basicValidations(
       requestFromDb,
@@ -205,8 +206,6 @@ export class MaintanceRequestService {
       user,
       workshop,
     );
-
-    Number(updateMaintanceRequestDto.status);
 
     if (updateMaintanceRequestDto.status === 1) {
       const res = await this.db.maintenceRequest.update({
