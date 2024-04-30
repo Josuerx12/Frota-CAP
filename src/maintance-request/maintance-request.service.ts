@@ -199,7 +199,9 @@ export class MaintanceRequestService {
       },
     });
     updateMaintanceRequestDto.status = Number(updateMaintanceRequestDto.status);
-
+    updateMaintanceRequestDto.workShopId = Number(
+      updateMaintanceRequestDto.workShopId,
+    );
     this.basicValidations(
       requestFromDb,
       updateMaintanceRequestDto,
