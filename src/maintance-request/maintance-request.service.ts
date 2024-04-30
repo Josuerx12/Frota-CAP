@@ -198,7 +198,7 @@ export class MaintanceRequestService {
         Vehicle: true,
       },
     });
-    Number(updateMaintanceRequestDto.status);
+    updateMaintanceRequestDto.status = Number(updateMaintanceRequestDto.status);
 
     this.basicValidations(
       requestFromDb,
