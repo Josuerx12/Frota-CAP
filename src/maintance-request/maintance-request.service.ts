@@ -251,7 +251,6 @@ export class MaintanceRequestService {
           id,
         },
         data: {
-          ...updateMaintanceRequestDto,
           workShopId: updateMaintanceRequestDto.workShopId,
           atendedBy: user.name,
           scheduledAt: new Date(dateNow),
@@ -280,7 +279,6 @@ export class MaintanceRequestService {
           id,
         },
         data: {
-          ...updateMaintanceRequestDto,
           delivered: true,
           deliveredAt: new Date(),
         },
@@ -355,7 +353,6 @@ export class MaintanceRequestService {
           id,
         },
         data: {
-          ...updateMaintanceRequestDto,
           serviceStartAt: new Date(Date.now()),
         },
         include: {
@@ -383,7 +380,6 @@ export class MaintanceRequestService {
           id,
         },
         data: {
-          ...updateMaintanceRequestDto,
           serviceTime: spendedTime,
           serviceEndAt: new Date(endDate),
         },
@@ -412,7 +408,6 @@ export class MaintanceRequestService {
           id,
         },
         data: {
-          ...updateMaintanceRequestDto,
           checkoutAt: new Date(),
         },
         include: {
