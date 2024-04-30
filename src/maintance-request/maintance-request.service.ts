@@ -356,6 +356,9 @@ export class MaintanceRequestService {
         },
         data: {
           status: 5,
+          deadlineToForward: new Date(
+            updateMaintanceRequestDto.deadlineToForward,
+          ),
           serviceStartAt: new Date(Date.now()),
         },
         include: {
