@@ -1,0 +1,151 @@
+import { CreateWorkshopDto } from './dto/create-workshop.dto';
+import { UpdateWorkshopDto } from './dto/update-workshop.dto';
+import { PrismaService } from 'src/prisma.service';
+import { IUser } from 'src/interfaces/User';
+import { IWorkshop } from 'src/interfaces/Workshop';
+export declare class WorkshopService {
+    private readonly db;
+    constructor(db: PrismaService);
+    adminGuard(user: IUser): void;
+    create(createWorkshopDto: CreateWorkshopDto, user: IUser): Promise<string>;
+    findAll(): Promise<{
+        workshops: {
+            name: string;
+            email: string;
+            id: number;
+            MaintenceRequest: {
+                id: number;
+                driverName: string;
+                km: number;
+                service: string;
+                serviceStartAt: Date;
+                serviceEndAt: Date;
+                serviceTime: number;
+                workShopId: number;
+                deadlineToForward: Date;
+                status: number;
+                atendedBy: string;
+                atendedAt: Date;
+                timeToSchedule: number;
+                scheduledAt: Date;
+                deadlineToDeliver: Date;
+                delivered: boolean;
+                deliveredAt: Date;
+                finishedBy: string;
+                finishedAt: Date;
+                checkoutBy: string;
+                checkoutAt: Date;
+                createdAt: Date;
+                updatedAt: Date;
+                plate: string;
+                ownerId: string;
+            }[];
+            createdAt: Date;
+            updatedAt: Date;
+            Address: {
+                id: number;
+                street: string;
+                number: number;
+                cep: number;
+                city: string;
+                state: string;
+                workshopId: number;
+                country: string;
+            };
+        }[];
+    }>;
+    findOne(id: number): Promise<{
+        workshop: {
+            name: string;
+            email: string;
+            id: number;
+            MaintenceRequest: {
+                id: number;
+                driverName: string;
+                km: number;
+                service: string;
+                serviceStartAt: Date;
+                serviceEndAt: Date;
+                serviceTime: number;
+                workShopId: number;
+                deadlineToForward: Date;
+                status: number;
+                atendedBy: string;
+                atendedAt: Date;
+                timeToSchedule: number;
+                scheduledAt: Date;
+                deadlineToDeliver: Date;
+                delivered: boolean;
+                deliveredAt: Date;
+                finishedBy: string;
+                finishedAt: Date;
+                checkoutBy: string;
+                checkoutAt: Date;
+                createdAt: Date;
+                updatedAt: Date;
+                plate: string;
+                ownerId: string;
+            }[];
+            createdAt: Date;
+            updatedAt: Date;
+            Address: {
+                id: number;
+                street: string;
+                number: number;
+                cep: number;
+                city: string;
+                state: string;
+                workshopId: number;
+                country: string;
+            };
+        };
+    }>;
+    loggedWorkshopDetails(ws: IWorkshop): Promise<{
+        workshop: {
+            name: string;
+            email: string;
+            id: number;
+            MaintenceRequest: {
+                id: number;
+                driverName: string;
+                km: number;
+                service: string;
+                serviceStartAt: Date;
+                serviceEndAt: Date;
+                serviceTime: number;
+                workShopId: number;
+                deadlineToForward: Date;
+                status: number;
+                atendedBy: string;
+                atendedAt: Date;
+                timeToSchedule: number;
+                scheduledAt: Date;
+                deadlineToDeliver: Date;
+                delivered: boolean;
+                deliveredAt: Date;
+                finishedBy: string;
+                finishedAt: Date;
+                checkoutBy: string;
+                checkoutAt: Date;
+                createdAt: Date;
+                updatedAt: Date;
+                plate: string;
+                ownerId: string;
+            }[];
+            createdAt: Date;
+            updatedAt: Date;
+            Address: {
+                id: number;
+                street: string;
+                number: number;
+                cep: number;
+                city: string;
+                state: string;
+                workshopId: number;
+                country: string;
+            };
+        };
+    }>;
+    update(id: number, updateWorkshopDto: UpdateWorkshopDto, user: IUser): Promise<string>;
+    remove(id: number, user: IUser): Promise<string>;
+}
