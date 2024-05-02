@@ -85,9 +85,21 @@ export class MaintanceRequestService {
     const requests = await this.db.maintenceRequest.findMany({
       include: {
         budgets: true,
-        Owner: true,
+        Owner: {
+          select: {
+            name: true,
+            phone: true,
+            email: true,
+          },
+        },
         Vehicle: true,
-        Workshop: true,
+        Workshop: {
+          select: {
+            name: true,
+            Address: true,
+            email: true,
+          },
+        },
       },
     });
 
@@ -101,9 +113,21 @@ export class MaintanceRequestService {
       },
       include: {
         budgets: true,
-        Owner: true,
+        Owner: {
+          select: {
+            name: true,
+            phone: true,
+            email: true,
+          },
+        },
         Vehicle: true,
-        Workshop: true,
+        Workshop: {
+          select: {
+            name: true,
+            Address: true,
+            email: true,
+          },
+        },
       },
     });
 
@@ -127,9 +151,21 @@ export class MaintanceRequestService {
       where: { ownerId: user.id },
       include: {
         budgets: true,
-        Owner: true,
+        Owner: {
+          select: {
+            name: true,
+            phone: true,
+            email: true,
+          },
+        },
         Vehicle: true,
-        Workshop: true,
+        Workshop: {
+          select: {
+            name: true,
+            Address: true,
+            email: true,
+          },
+        },
       },
     });
 
@@ -141,9 +177,21 @@ export class MaintanceRequestService {
       where: { workShopId: ws.id },
       include: {
         budgets: true,
-        Owner: true,
+        Owner: {
+          select: {
+            name: true,
+            phone: true,
+            email: true,
+          },
+        },
         Vehicle: true,
-        Workshop: true,
+        Workshop: {
+          select: {
+            name: true,
+            Address: true,
+            email: true,
+          },
+        },
       },
     });
 
