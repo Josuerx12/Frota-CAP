@@ -68,9 +68,21 @@ let MaintanceRequestService = class MaintanceRequestService {
         const requests = await this.db.maintenceRequest.findMany({
             include: {
                 budgets: true,
-                Owner: true,
+                Owner: {
+                    select: {
+                        name: true,
+                        phone: true,
+                        email: true,
+                    },
+                },
                 Vehicle: true,
-                Workshop: true,
+                Workshop: {
+                    select: {
+                        name: true,
+                        Address: true,
+                        email: true,
+                    },
+                },
             },
         });
         return { requests };
@@ -82,9 +94,21 @@ let MaintanceRequestService = class MaintanceRequestService {
             },
             include: {
                 budgets: true,
-                Owner: true,
+                Owner: {
+                    select: {
+                        name: true,
+                        phone: true,
+                        email: true,
+                    },
+                },
                 Vehicle: true,
-                Workshop: true,
+                Workshop: {
+                    select: {
+                        name: true,
+                        Address: true,
+                        email: true,
+                    },
+                },
             },
         });
         if (!request) {
@@ -100,9 +124,21 @@ let MaintanceRequestService = class MaintanceRequestService {
             where: { ownerId: user.id },
             include: {
                 budgets: true,
-                Owner: true,
+                Owner: {
+                    select: {
+                        name: true,
+                        phone: true,
+                        email: true,
+                    },
+                },
                 Vehicle: true,
-                Workshop: true,
+                Workshop: {
+                    select: {
+                        name: true,
+                        Address: true,
+                        email: true,
+                    },
+                },
             },
         });
         return { requests };
@@ -112,9 +148,21 @@ let MaintanceRequestService = class MaintanceRequestService {
             where: { workShopId: ws.id },
             include: {
                 budgets: true,
-                Owner: true,
+                Owner: {
+                    select: {
+                        name: true,
+                        phone: true,
+                        email: true,
+                    },
+                },
                 Vehicle: true,
-                Workshop: true,
+                Workshop: {
+                    select: {
+                        name: true,
+                        Address: true,
+                        email: true,
+                    },
+                },
             },
         });
         return { requests };

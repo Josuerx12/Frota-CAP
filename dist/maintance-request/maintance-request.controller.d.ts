@@ -10,12 +10,18 @@ export declare class MaintanceRequestController {
     findAll(req: Request): Promise<{
         requests: ({
             Workshop: {
-                id: number;
                 name: string;
                 email: string;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
+                Address: {
+                    id: number;
+                    street: string;
+                    number: number;
+                    cep: number;
+                    city: string;
+                    state: string;
+                    workshopId: number;
+                    country: string;
+                };
             };
             budgets: {
                 id: number;
@@ -36,16 +42,9 @@ export declare class MaintanceRequestController {
                 updatedAt: Date;
             };
             Owner: {
-                id: string;
+                name: string;
                 email: string;
                 phone: string;
-                name: string;
-                requester: boolean;
-                frotas: boolean;
-                admin: boolean;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -78,12 +77,18 @@ export declare class MaintanceRequestController {
     findByUser(req: Request): Promise<{
         requests: ({
             Workshop: {
-                id: number;
                 name: string;
                 email: string;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
+                Address: {
+                    id: number;
+                    street: string;
+                    number: number;
+                    cep: number;
+                    city: string;
+                    state: string;
+                    workshopId: number;
+                    country: string;
+                };
             };
             budgets: {
                 id: number;
@@ -104,16 +109,9 @@ export declare class MaintanceRequestController {
                 updatedAt: Date;
             };
             Owner: {
-                id: string;
+                name: string;
                 email: string;
                 phone: string;
-                name: string;
-                requester: boolean;
-                frotas: boolean;
-                admin: boolean;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -146,12 +144,18 @@ export declare class MaintanceRequestController {
     findByWorkshop(req: Request): Promise<{
         requests: ({
             Workshop: {
-                id: number;
                 name: string;
                 email: string;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
+                Address: {
+                    id: number;
+                    street: string;
+                    number: number;
+                    cep: number;
+                    city: string;
+                    state: string;
+                    workshopId: number;
+                    country: string;
+                };
             };
             budgets: {
                 id: number;
@@ -172,16 +176,9 @@ export declare class MaintanceRequestController {
                 updatedAt: Date;
             };
             Owner: {
-                id: string;
+                name: string;
                 email: string;
                 phone: string;
-                name: string;
-                requester: boolean;
-                frotas: boolean;
-                admin: boolean;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -214,12 +211,18 @@ export declare class MaintanceRequestController {
     findOne(id: string, req: Request): Promise<{
         request: {
             Workshop: {
-                id: number;
                 name: string;
                 email: string;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
+                Address: {
+                    id: number;
+                    street: string;
+                    number: number;
+                    cep: number;
+                    city: string;
+                    state: string;
+                    workshopId: number;
+                    country: string;
+                };
             };
             budgets: {
                 id: number;
@@ -240,16 +243,9 @@ export declare class MaintanceRequestController {
                 updatedAt: Date;
             };
             Owner: {
-                id: string;
+                name: string;
                 email: string;
                 phone: string;
-                name: string;
-                requester: boolean;
-                frotas: boolean;
-                admin: boolean;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;

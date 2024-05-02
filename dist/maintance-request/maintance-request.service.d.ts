@@ -16,12 +16,18 @@ export declare class MaintanceRequestService {
     findAll(user: IUser, workshop: IWorkshop): Promise<{
         requests: ({
             Workshop: {
-                id: number;
                 name: string;
                 email: string;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
+                Address: {
+                    id: number;
+                    street: string;
+                    number: number;
+                    cep: number;
+                    city: string;
+                    state: string;
+                    workshopId: number;
+                    country: string;
+                };
             };
             budgets: {
                 id: number;
@@ -42,16 +48,9 @@ export declare class MaintanceRequestService {
                 updatedAt: Date;
             };
             Owner: {
-                id: string;
+                name: string;
                 email: string;
                 phone: string;
-                name: string;
-                requester: boolean;
-                frotas: boolean;
-                admin: boolean;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -84,12 +83,18 @@ export declare class MaintanceRequestService {
     findOne(id: number, user: IUser, workshop: IWorkshop): Promise<{
         request: {
             Workshop: {
-                id: number;
                 name: string;
                 email: string;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
+                Address: {
+                    id: number;
+                    street: string;
+                    number: number;
+                    cep: number;
+                    city: string;
+                    state: string;
+                    workshopId: number;
+                    country: string;
+                };
             };
             budgets: {
                 id: number;
@@ -110,16 +115,9 @@ export declare class MaintanceRequestService {
                 updatedAt: Date;
             };
             Owner: {
-                id: string;
+                name: string;
                 email: string;
                 phone: string;
-                name: string;
-                requester: boolean;
-                frotas: boolean;
-                admin: boolean;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -152,12 +150,18 @@ export declare class MaintanceRequestService {
     findByUser(user: IUser): Promise<{
         requests: ({
             Workshop: {
-                id: number;
                 name: string;
                 email: string;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
+                Address: {
+                    id: number;
+                    street: string;
+                    number: number;
+                    cep: number;
+                    city: string;
+                    state: string;
+                    workshopId: number;
+                    country: string;
+                };
             };
             budgets: {
                 id: number;
@@ -178,16 +182,9 @@ export declare class MaintanceRequestService {
                 updatedAt: Date;
             };
             Owner: {
-                id: string;
+                name: string;
                 email: string;
                 phone: string;
-                name: string;
-                requester: boolean;
-                frotas: boolean;
-                admin: boolean;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -220,12 +217,18 @@ export declare class MaintanceRequestService {
     findByWorkshop(ws: IWorkshop): Promise<{
         requests: ({
             Workshop: {
-                id: number;
                 name: string;
                 email: string;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
+                Address: {
+                    id: number;
+                    street: string;
+                    number: number;
+                    cep: number;
+                    city: string;
+                    state: string;
+                    workshopId: number;
+                    country: string;
+                };
             };
             budgets: {
                 id: number;
@@ -246,16 +249,9 @@ export declare class MaintanceRequestService {
                 updatedAt: Date;
             };
             Owner: {
-                id: string;
+                name: string;
                 email: string;
                 phone: string;
-                name: string;
-                requester: boolean;
-                frotas: boolean;
-                admin: boolean;
-                password: string;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
