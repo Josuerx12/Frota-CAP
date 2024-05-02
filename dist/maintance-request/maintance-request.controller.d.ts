@@ -69,6 +69,14 @@ export declare class MaintanceRequestController {
     }>;
     findByUser(req: Request): Promise<{
         requests: ({
+            Workshop: {
+                id: number;
+                name: string;
+                email: string;
+                password: string;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             budgets: {
                 id: number;
                 url: string;
@@ -129,6 +137,14 @@ export declare class MaintanceRequestController {
     }>;
     findByWorkshop(req: Request): Promise<{
         requests: ({
+            Workshop: {
+                id: number;
+                name: string;
+                email: string;
+                password: string;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             budgets: {
                 id: number;
                 url: string;
@@ -189,6 +205,14 @@ export declare class MaintanceRequestController {
     }>;
     findOne(id: string, req: Request): Promise<{
         request: {
+            Workshop: {
+                id: number;
+                name: string;
+                email: string;
+                password: string;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             budgets: {
                 id: number;
                 url: string;

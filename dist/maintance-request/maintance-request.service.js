@@ -83,6 +83,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                 budgets: true,
                 Owner: true,
                 Vehicle: true,
+                Workshop: true,
             },
         });
         if (!request) {
@@ -100,6 +101,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                 budgets: true,
                 Owner: true,
                 Vehicle: true,
+                Workshop: true,
             },
         });
         return { requests };
@@ -111,6 +113,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                 budgets: true,
                 Owner: true,
                 Vehicle: true,
+                Workshop: true,
             },
         });
         return { requests };

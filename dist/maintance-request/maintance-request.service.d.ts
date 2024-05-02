@@ -75,6 +75,14 @@ export declare class MaintanceRequestService {
     }>;
     findOne(id: number, user: IUser, workshop: IWorkshop): Promise<{
         request: {
+            Workshop: {
+                id: number;
+                name: string;
+                email: string;
+                password: string;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             budgets: {
                 id: number;
                 url: string;
@@ -135,6 +143,14 @@ export declare class MaintanceRequestService {
     }>;
     findByUser(user: IUser): Promise<{
         requests: ({
+            Workshop: {
+                id: number;
+                name: string;
+                email: string;
+                password: string;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             budgets: {
                 id: number;
                 url: string;
@@ -195,6 +211,14 @@ export declare class MaintanceRequestService {
     }>;
     findByWorkshop(ws: IWorkshop): Promise<{
         requests: ({
+            Workshop: {
+                id: number;
+                name: string;
+                email: string;
+                password: string;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             budgets: {
                 id: number;
                 url: string;
