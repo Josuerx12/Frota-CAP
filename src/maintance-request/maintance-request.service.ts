@@ -420,6 +420,7 @@ export class MaintanceRequestService {
         },
         data: {
           status: 7,
+          checkoutBy: updateMaintanceRequestDto.checkoutBy,
           checkoutAt: new Date(),
         },
         include: {
