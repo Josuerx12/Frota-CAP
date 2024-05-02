@@ -9,6 +9,14 @@ export declare class MaintanceRequestController {
     create(createMaintanceRequestDto: CreateMaintanceRequestDto, req: Request): Promise<string>;
     findAll(req: Request): Promise<{
         requests: ({
+            Workshop: {
+                id: number;
+                name: string;
+                email: string;
+                password: string;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             budgets: {
                 id: number;
                 url: string;

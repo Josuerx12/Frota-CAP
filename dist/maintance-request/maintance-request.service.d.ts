@@ -15,6 +15,14 @@ export declare class MaintanceRequestService {
     create(createMaintanceRequestDto: CreateMaintanceRequestDto, user: IUser): Promise<string>;
     findAll(user: IUser, workshop: IWorkshop): Promise<{
         requests: ({
+            Workshop: {
+                id: number;
+                name: string;
+                email: string;
+                password: string;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             budgets: {
                 id: number;
                 url: string;

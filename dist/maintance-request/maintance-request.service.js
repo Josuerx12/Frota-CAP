@@ -70,6 +70,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                 budgets: true,
                 Owner: true,
                 Vehicle: true,
+                Workshop: true,
             },
         });
         return { requests };
