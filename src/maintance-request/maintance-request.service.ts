@@ -102,6 +102,7 @@ export class MaintanceRequestService {
         budgets: true,
         Owner: true,
         Vehicle: true,
+        Workshop: true,
       },
     });
 
@@ -127,6 +128,7 @@ export class MaintanceRequestService {
         budgets: true,
         Owner: true,
         Vehicle: true,
+        Workshop: true,
       },
     });
 
@@ -140,6 +142,7 @@ export class MaintanceRequestService {
         budgets: true,
         Owner: true,
         Vehicle: true,
+        Workshop: true,
       },
     });
 
