@@ -70,7 +70,7 @@ __decorate([
     __metadata("design:type", Object)
 ], CreateMaintanceRequestDto.prototype, "budgets", void 0);
 __decorate([
-    (0, class_validator_1.IsMobilePhone)('pt-BR', { strictMode: true }, { message: 'Numero de telefone é obrigatorio.' }),
+    (0, class_validator_1.IsPhoneNumber)('BR', { message: 'Numero de telefone é obrigatorio.' }),
     __metadata("design:type", String)
 ], CreateMaintanceRequestDto.prototype, "driverPhone", void 0);
 __decorate([

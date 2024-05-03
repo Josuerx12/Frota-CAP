@@ -47,7 +47,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateWorkshopDto.prototype, "email", void 0);
 __decorate([
-    (0, class_validator_1.IsMobilePhone)('pt-BR', { strictMode: true }, { message: 'Numero da oficina é obrigatorio para o cadastro.' }),
+    (0, class_validator_1.IsPhoneNumber)('BR', {
+        message: 'Numero da oficina é obrigatorio para o cadastro.',
+    }),
     __metadata("design:type", String)
 ], CreateWorkshopDto.prototype, "phone", void 0);
 __decorate([
