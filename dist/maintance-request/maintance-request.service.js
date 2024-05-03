@@ -65,7 +65,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                                         `O veículo placa: ${req.plate} foi retirado por ${req.checkoutBy} as ${new Date(req.checkoutAt).toLocaleString('pt-BR')}`}`);
     }
     async create(createMaintanceRequestDto, user) {
-        const { driverPhone } = createMaintanceRequestDto;
+        const { driverPhone, os } = createMaintanceRequestDto;
         if (!user.requester) {
             throw new common_1.BadRequestException('Você não possui permissão para realizar essa solicitação, fale com o suporte!');
         }
@@ -80,6 +80,7 @@ let MaintanceRequestService = class MaintanceRequestService {
         const request = await this.db.maintenceRequest.create({
             data: {
                 ...createMaintanceRequestDto,
+                os,
                 driverPhone: driverPhone
                     ?.replace('(', '')
                     ?.replace(')', '')
@@ -91,11 +92,6 @@ let MaintanceRequestService = class MaintanceRequestService {
                 budgets: true,
                 Vehicle: true,
                 Owner: true,
-                Workshop: {
-                    include: {
-                        Address: true,
-                    },
-                },
             },
         });
         await this.mail.send(request.Owner.email, request);

@@ -74,7 +74,7 @@ export class MaintanceRequestService {
     createMaintanceRequestDto: CreateMaintanceRequestDto,
     user: IUser,
   ) {
-    const { driverPhone } = createMaintanceRequestDto;
+    const { driverPhone, os } = createMaintanceRequestDto;
 
     if (!user.requester) {
       throw new BadRequestException(
@@ -95,6 +95,7 @@ export class MaintanceRequestService {
     const request = await this.db.maintenceRequest.create({
       data: {
         ...createMaintanceRequestDto,
+        os,
         driverPhone: driverPhone
           ?.replace('(', '')
           ?.replace(')', '')
@@ -106,11 +107,6 @@ export class MaintanceRequestService {
         budgets: true,
         Vehicle: true,
         Owner: true,
-        Workshop: {
-          include: {
-            Address: true,
-          },
-        },
       },
     });
 
