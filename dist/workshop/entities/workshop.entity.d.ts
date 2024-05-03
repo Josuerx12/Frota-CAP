@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 export declare class Workshop implements Prisma.WorkshopUncheckedCreateInput {
+    phone: string;
     id?: number;
     name: string;
     email: string;

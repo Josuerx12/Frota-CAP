@@ -26,10 +26,46 @@ let MaintanceRequestService = class MaintanceRequestService {
     }
     wppMessageTemplate(req) {
         return ('*Frota CAP : Manutenção de Veículos*\n\n' +
-            `${req.status === 1 ? '*✴️ Seu chamado está sendo agendado✴️*\n\n' : req.status === 2 ? '*⛔ Encaminhar Veículo para oficina ⛔*\n\n' : req.status === 3 ? '*⚠️ Veículo chegou na oficina ⚠️*\n\n' : req.status === 4 ? '*📥 Orçamento enviado para aprovação📥*\n\n' : req.status === 5 ? '*🛠️ Veículo em manutenção 🛠️*\n\n' : req.status === 6 ? '*✅ Veículo Pronto para Retirada ✅*\n\n' : req.status === 7 && '*🆗Veículo Retirado🆗*\n\n'}` +
-            `${req.status === 1 ? `Estamos agendando seu chamado numero:${req.id}, na oficina!` : req.status === 2 ? `O Veículo deverá ser encaminhado para oficina no dia ${req.deadlineToDeliver.toLocaleString('pt-BR')}.` : req.status === 3 ? 'O Veículo Chegou na Oficina.' : req.status === 4 ? 'Aguardando aprovação do orçamento.' : req.status === 5 ? `Orçamento aprovado, veículo está em manutenção com prazo de entrega até ${req.deadlineToForward}.` : req.status === 6 ? 'O veículo está pronto para retirada.' : req.status === 7 && `O veículo foi retirado por ${req.checkoutBy} as ${new Date(req.checkoutAt).toLocaleString('pt-BR')}`}`);
+            `${req.status === 1
+                ? '*✴️ Seu chamado está sendo agendado✴️*\n\n'
+                : req.status === 2
+                    ? '*⛔ Encaminhar Veículo para oficina ⛔*\n\n'
+                    : req.status === 3
+                        ? '*⚠️ Veículo chegou na oficina ⚠️*\n\n'
+                        : req.status === 4
+                            ? '*📥 Orçamento enviado para aprovação📥*\n\n'
+                            : req.status === 5
+                                ? '*🛠️ Veículo em manutenção 🛠️*\n\n'
+                                : req.status === 6
+                                    ? '*✅ Veículo Pronto para Retirada ✅*\n\n'
+                                    : req.status === 7 && '*🆗Veículo Retirado🆗*\n\n'}` +
+            `${req.status === 1
+                ? `Estamos agendando a solicitação numero: *${req.id}*, na oficina! \n\n *O.S:* ${req.os}`
+                : req.status === 2
+                    ? `O Veículo placa: ${req.plate} deverá ser encaminhado para oficina.\n\n
+      *Local 🚩:* ${req.Workshop.name}.\n
+      *Endereço 🔰:* ${req.Workshop.Address.street}, ${req.Workshop.Address.number}.\n
+      *Data e Horario ⌚:*  ${new Date(req.deadlineToDeliver).toLocaleString('pt-BR')}\n
+      *Protocolo 🔐:* ${req.protocol}
+     .`
+                    : req.status === 3
+                        ? `O Veículo placa: *${req.plate}* Chegou na Oficina.`
+                        : req.status === 4
+                            ? `Aguardando aprovação do orçamento para a manutenção do veiculo placa: *${req.plate}*.`
+                            : req.status === 5
+                                ? `Veículo placa *${req.plate}* está em manutenção com prazo de entrega até ${new Date(req.deadlineToForward).toLocaleString('pt-BR')}.`
+                                : req.status === 6
+                                    ? `O veículo placa *${req.plate}* está pronto para retirada.\n\n
+                    *Local 🚩:* ${req.Workshop.name}.\n
+                    *Endereço 🔰:* ${req.Workshop.Address.street}, ${req.Workshop.Address.number}.\n
+                    *Data e Horario ⌚:*  ${new Date(req.deadlineToDeliver).toLocaleString('pt-BR')}\n
+                    *Protocolo 🔐:* ${req.protocol}
+                    `
+                                    : req.status === 7 &&
+                                        `O veículo placa: ${req.plate} foi retirado por ${req.checkoutBy} as ${new Date(req.checkoutAt).toLocaleString('pt-BR')}`}`);
     }
     async create(createMaintanceRequestDto, user) {
+        const { driverPhone } = createMaintanceRequestDto;
         if (!user.requester) {
             throw new common_1.BadRequestException('Você não possui permissão para realizar essa solicitação, fale com o suporte!');
         }
@@ -44,18 +80,34 @@ let MaintanceRequestService = class MaintanceRequestService {
         const request = await this.db.maintenceRequest.create({
             data: {
                 ...createMaintanceRequestDto,
+                driverPhone: driverPhone
+                    ?.replace('(', '')
+                    ?.replace(')', '')
+                    ?.replace('-', '')
+                    ?.replace(' ', ''),
                 ownerId: user.id,
             },
             include: {
                 budgets: true,
                 Vehicle: true,
                 Owner: true,
+                Workshop: {
+                    include: {
+                        Address: true,
+                    },
+                },
             },
         });
         await this.mail.send(request.Owner.email, request);
         await this.api
             .post('/send-text', {
             phone: `55${request.Owner.phone}`,
+            message: `*Frota CAP : Manutenção de Veículos*\n\n*🆕 Sua solicitação Nº *${request.id}* foi recebida 🆕*\n\nEm breve iniciaremos o atendimento da sua O.S Nº *${request.os}*`,
+        })
+            .catch((err) => console.log(err.message));
+        await this.api
+            .post('/send-text', {
+            phone: `55${request.driverPhone}`,
             message: `*Frota CAP : Manutenção de Veículos*\n\n*🆕 Seu chamado Nº ${request.id} foi recebido 🆕*\n\nIremos agendar seu chamado na Oficina`,
         })
             .catch((err) => console.log(err.message));
@@ -190,8 +242,16 @@ let MaintanceRequestService = class MaintanceRequestService {
             where: { id },
             include: {
                 budgets: true,
-                Owner: true,
+                Owner: {
+                    select: {
+                        name: true,
+                        phone: true,
+                        email: true,
+                        id: true,
+                    },
+                },
                 Vehicle: true,
+                Workshop: true,
             },
         });
         updateMaintanceRequestDto.status = Number(updateMaintanceRequestDto.status);
@@ -216,6 +276,10 @@ let MaintanceRequestService = class MaintanceRequestService {
             await this.mail.send(res.Owner.email, res);
             await this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
+                message: this.wppMessageTemplate(res),
+            });
+            await this.api.post('/send-text', {
+                phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
         }
@@ -252,6 +316,10 @@ let MaintanceRequestService = class MaintanceRequestService {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
+            await this.api.post('/send-text', {
+                phone: `55${res.driverPhone}`,
+                message: this.wppMessageTemplate(res),
+            });
         }
         if (updateMaintanceRequestDto.status === 3) {
             const res = await this.db.maintenceRequest.update({
@@ -272,6 +340,10 @@ let MaintanceRequestService = class MaintanceRequestService {
             await this.mail.send(res.Owner.email, res);
             await this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
+                message: this.wppMessageTemplate(res),
+            });
+            await this.api.post('/send-text', {
+                phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
         }
@@ -317,6 +389,10 @@ let MaintanceRequestService = class MaintanceRequestService {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
+            await this.api.post('/send-text', {
+                phone: `55${res.driverPhone}`,
+                message: this.wppMessageTemplate(res),
+            });
         }
         if (updateMaintanceRequestDto.status === 5) {
             if (!updateMaintanceRequestDto.deadlineToForward) {
@@ -340,6 +416,10 @@ let MaintanceRequestService = class MaintanceRequestService {
             await this.mail.send(res.Owner.email, res);
             await this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
+                message: this.wppMessageTemplate(res),
+            });
+            await this.api.post('/send-text', {
+                phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
         }
@@ -367,6 +447,10 @@ let MaintanceRequestService = class MaintanceRequestService {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
+            await this.api.post('/send-text', {
+                phone: `55${res.driverPhone}`,
+                message: this.wppMessageTemplate(res),
+            });
         }
         if (updateMaintanceRequestDto.status === 7) {
             if (!updateMaintanceRequestDto.checkoutBy) {
@@ -390,6 +474,10 @@ let MaintanceRequestService = class MaintanceRequestService {
             await this.mail.send(res.Owner.email, res);
             await this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
+                message: this.wppMessageTemplate(res),
+            });
+            await this.api.post('/send-text', {
+                phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
         }

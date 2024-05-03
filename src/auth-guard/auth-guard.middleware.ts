@@ -83,6 +83,7 @@ export class AuthGuardMiddleware implements NestMiddleware {
                   createdAt: true,
                   updatedAt: true,
                   MaintenceRequest: true,
+                  phone: true,
                 },
               });
 

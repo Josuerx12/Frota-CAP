@@ -36,6 +36,7 @@ model Address {
 model Workshop {
   id               Int                @id @default(autoincrement())
   name             String
+  phone            String             @unique
   email            String             @unique
   password         String
   createdAt        DateTime           @default(now())
@@ -76,10 +77,12 @@ model budget {
 }
 
 model MaintenceRequest {
-  id         Int    @id @default(autoincrement())
-  driverName String
-  km         Int
-
+  id                Int       @id @default(autoincrement())
+  driverName        String
+  driverPhone       String
+  km                Int
+  os                Int
+  protocol          String?
   service           String
   serviceStartAt    DateTime?
   serviceEndAt      DateTime?

@@ -1,7 +1,6 @@
 import { Prisma } from '@prisma/client';
 export declare class User implements Prisma.UserUncheckedCreateInput {
     admin?: boolean;
-    workshop?: boolean;
     frotas?: boolean;
     requester?: boolean;
     id: string;

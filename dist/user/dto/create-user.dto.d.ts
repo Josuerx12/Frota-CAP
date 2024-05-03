@@ -7,6 +7,5 @@ export declare class CreateUserDto extends User {
     password: string;
     confirmPassword: string;
     admin?: boolean;
-    workshop?: boolean;
     frotas?: boolean;
 }

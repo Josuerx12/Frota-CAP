@@ -1,5 +1,12 @@
-import { IsString, IsNumber, ValidateNested } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  ValidateNested,
+  IsMobilePhone,
+  IsEmail,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+import { Workshop } from '../entities/workshop.entity';
 
 class Address {
   @IsString({ message: 'Nome da rua é obrigatório e deve ser informado.' })
@@ -27,9 +34,16 @@ class Address {
   country: string;
 }
 
-export class CreateWorkshopDto {
-  @IsString()
+export class CreateWorkshopDto extends Workshop {
+  @IsEmail({}, { message: 'Email valido é obrigatorio.' })
   email: string;
+
+  @IsMobilePhone(
+    'pt-BR',
+    { strictMode: true },
+    { message: 'Numero da oficina é obrigatorio para o cadastro.' },
+  )
+  phone: string;
 
   @IsString()
   name: string;

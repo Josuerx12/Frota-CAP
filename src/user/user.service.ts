@@ -12,11 +12,9 @@ export class UserService {
   async create(createUserDto: CreateUserDto, userAuthenticated: IUser) {
     if (!userAuthenticated.admin) {
       throw new BadRequestException(
-        'Você não possui autorização para acessar essa rota!',
+        'Você não tem autorização para criar um novo usuário.',
       );
     }
-
-    console.log(createUserDto);
 
     const allUsers = await this.db.user.findMany();
 
@@ -167,7 +165,6 @@ export class UserService {
     if (
       (updateUserDto.admin ||
         updateUserDto.frotas ||
-        updateUserDto.workshop ||
         updateUserDto.requester) &&
       !user.admin
     ) {

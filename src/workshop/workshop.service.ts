@@ -19,16 +19,45 @@ export class WorkshopService {
   }
 
   async create(createWorkshopDto: CreateWorkshopDto, user: IUser) {
-    const { email, name, password, address } = createWorkshopDto;
+    const { email, name, password, address, phone } = createWorkshopDto;
 
     this.adminGuard(user);
 
     const salt = await genSalt(10);
     const passHash = await hash(password, salt);
 
+    const mailInUseValidation = await this.db.workshop.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (mailInUseValidation) {
+      throw new BadRequestException({
+        email: 'Email já em uso, insira outro para continuar.',
+      });
+    }
+
+    const phoneInUseValidation = await this.db.workshop.findUnique({
+      where: {
+        phone: phone,
+      },
+    });
+
+    if (phoneInUseValidation) {
+      throw new BadRequestException({
+        email: 'Numero de telefone já em uso, insira outro para continuar.',
+      });
+    }
+
     const ws = await this.db.workshop.create({
       data: {
         email: email,
+        phone: phone
+          ?.replace('(', '')
+          ?.replace(')', '')
+          ?.replace('-', '')
+          ?.replace(' ', ''),
         name: name,
         password: passHash,
         Address: {

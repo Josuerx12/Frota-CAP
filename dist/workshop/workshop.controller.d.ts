@@ -14,7 +14,10 @@ export declare class WorkshopController {
             MaintenceRequest: {
                 id: number;
                 driverName: string;
+                driverPhone: string;
                 km: number;
+                os: number;
+                protocol: string;
                 service: string;
                 serviceStartAt: Date;
                 serviceEndAt: Date;
@@ -60,7 +63,10 @@ export declare class WorkshopController {
             MaintenceRequest: {
                 id: number;
                 driverName: string;
+                driverPhone: string;
                 km: number;
+                os: number;
+                protocol: string;
                 service: string;
                 serviceStartAt: Date;
                 serviceEndAt: Date;
@@ -106,7 +112,10 @@ export declare class WorkshopController {
             MaintenceRequest: {
                 id: number;
                 driverName: string;
+                driverPhone: string;
                 km: number;
+                os: number;
+                protocol: string;
                 service: string;
                 serviceStartAt: Date;
                 serviceEndAt: Date;

@@ -11,4 +11,6 @@ export declare class CreateMaintanceRequestDto extends MaintanceRequest {
     finishedBy?: string;
     finishedAt?: string | Date;
     budgets?: Prisma.budgetUncheckedCreateNestedManyWithoutMaintenceInput;
+    driverPhone: string;
+    os: number;
 }

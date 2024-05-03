@@ -66,6 +66,7 @@ let AuthGuardMiddleware = class AuthGuardMiddleware {
                                 createdAt: true,
                                 updatedAt: true,
                                 MaintenceRequest: true,
+                                phone: true,
                             },
                         });
                         req.workshop = workshop;

@@ -20,9 +20,8 @@ let UserService = class UserService {
     }
     async create(createUserDto, userAuthenticated) {
         if (!userAuthenticated.admin) {
-            throw new common_1.BadRequestException('Você não possui autorização para acessar essa rota!');
+            throw new common_1.BadRequestException('Você não tem autorização para criar um novo usuário.');
         }
-        console.log(createUserDto);
         const allUsers = await this.db.user.findMany();
         if (allUsers.find((user) => user.email === createUserDto.email)) {
             throw new common_1.BadRequestException({
@@ -145,7 +144,6 @@ let UserService = class UserService {
         }
         if ((updateUserDto.admin ||
             updateUserDto.frotas ||
-            updateUserDto.workshop ||
             updateUserDto.requester) &&
             !user.admin) {
             throw new common_1.BadRequestException({

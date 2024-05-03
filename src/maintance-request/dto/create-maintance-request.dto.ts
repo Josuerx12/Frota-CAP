@@ -4,6 +4,7 @@ import {
   IsArray,
   IsDateString,
   IsInt,
+  IsMobilePhone,
   IsOptional,
   IsString,
   Length,
@@ -58,4 +59,14 @@ export class CreateMaintanceRequestDto extends MaintanceRequest {
   @IsOptional()
   @IsArray({ message: 'Orçamento deve ser um array.' })
   budgets?: Prisma.budgetUncheckedCreateNestedManyWithoutMaintenceInput;
+
+  @IsMobilePhone(
+    'pt-BR',
+    { strictMode: true },
+    { message: 'Numero de telefone é obrigatorio.' },
+  )
+  driverPhone: string;
+
+  @IsInt({ message: 'Numero da O.S do SGVE é obrigatoria.' })
+  os: number;
 }

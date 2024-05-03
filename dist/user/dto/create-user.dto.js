@@ -45,11 +45,6 @@ __decorate([
 ], CreateUserDto.prototype, "admin", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsBoolean)({ message: 'Workshop deve ser um valor booleano' }),
-    __metadata("design:type", Boolean)
-], CreateUserDto.prototype, "workshop", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)({ message: 'Frotas deve ser um valor booleano' }),
     __metadata("design:type", Boolean)
 ], CreateUserDto.prototype, "frotas", void 0);

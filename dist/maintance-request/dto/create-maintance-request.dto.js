@@ -69,4 +69,12 @@ __decorate([
     (0, class_validator_1.IsArray)({ message: 'Orçamento deve ser um array.' }),
     __metadata("design:type", Object)
 ], CreateMaintanceRequestDto.prototype, "budgets", void 0);
+__decorate([
+    (0, class_validator_1.IsMobilePhone)('pt-BR', { strictMode: true }, { message: 'Numero de telefone é obrigatorio.' }),
+    __metadata("design:type", String)
+], CreateMaintanceRequestDto.prototype, "driverPhone", void 0);
+__decorate([
+    (0, class_validator_1.IsInt)({ message: 'Numero da O.S do SGVE é obrigatoria.' }),
+    __metadata("design:type", Number)
+], CreateMaintanceRequestDto.prototype, "os", void 0);
 //# sourceMappingURL=create-maintance-request.dto.js.map

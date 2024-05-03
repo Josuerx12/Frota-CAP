@@ -1,13 +1,19 @@
+import { IWorkshop } from './Workshop';
+
 interface IMaintenceRequest {
   id: number;
   plate: string;
+  os: number;
   driverName: string;
+  protocol?: string;
+  driverPhone: string;
   km: number;
   ownerId: string;
   observation?: string;
   deadlineToForward?: Date | string;
   deadlineToDeliver?: Date | string;
   delivered: boolean;
+  Workshop?: IWorkshop;
   deliveredAt?: Date | string;
   status: number;
   atendedBy?: string;

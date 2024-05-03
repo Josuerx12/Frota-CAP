@@ -37,9 +37,6 @@ export class CreateUserDto extends User {
   @IsBoolean({ message: 'Admin deve ser um valor booleano' })
   admin?: boolean;
   @IsOptional()
-  @IsBoolean({ message: 'Workshop deve ser um valor booleano' })
-  workshop?: boolean;
-  @IsOptional()
   @IsBoolean({ message: 'Frotas deve ser um valor booleano' })
   frotas?: boolean;
 }

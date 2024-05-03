@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateWorkshopDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const workshop_entity_1 = require("../entities/workshop.entity");
 class Address {
 }
 __decorate([
@@ -38,13 +39,17 @@ __decorate([
     (0, class_validator_1.IsString)({ message: 'Nome do país deve ser informado.' }),
     __metadata("design:type", String)
 ], Address.prototype, "country", void 0);
-class CreateWorkshopDto {
+class CreateWorkshopDto extends workshop_entity_1.Workshop {
 }
 exports.CreateWorkshopDto = CreateWorkshopDto;
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsEmail)({}, { message: 'Email valido é obrigatorio.' }),
     __metadata("design:type", String)
 ], CreateWorkshopDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsMobilePhone)('pt-BR', { strictMode: true }, { message: 'Numero da oficina é obrigatorio para o cadastro.' }),
+    __metadata("design:type", String)
+], CreateWorkshopDto.prototype, "phone", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
