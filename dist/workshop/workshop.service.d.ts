@@ -12,6 +12,7 @@ export declare class WorkshopService {
         workshops: {
             name: string;
             email: string;
+            phone: string;
             id: number;
             MaintenceRequest: {
                 id: number;
@@ -110,6 +111,7 @@ export declare class WorkshopService {
         workshop: {
             name: string;
             email: string;
+            phone: string;
             id: number;
             MaintenceRequest: {
                 id: number;

@@ -10,6 +10,7 @@ export declare class WorkshopController {
         workshops: {
             name: string;
             email: string;
+            phone: string;
             id: number;
             MaintenceRequest: {
                 id: number;
@@ -59,6 +60,7 @@ export declare class WorkshopController {
         workshop: {
             name: string;
             email: string;
+            phone: string;
             id: number;
             MaintenceRequest: {
                 id: number;
