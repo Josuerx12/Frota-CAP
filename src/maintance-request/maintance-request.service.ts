@@ -308,7 +308,17 @@ export class MaintanceRequestService {
           },
         },
         Vehicle: true,
-        Workshop: true,
+        Workshop: {
+          select: {
+            Address: true,
+            email: true,
+            name: true,
+            phone: true,
+            createdAt: true,
+            id: true,
+            updatedAt: true,
+          },
+        },
       },
     });
     updateMaintanceRequestDto.status = Number(updateMaintanceRequestDto.status);
@@ -336,6 +346,17 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
+          Workshop: {
+            select: {
+              Address: true,
+              email: true,
+              name: true,
+              phone: true,
+              createdAt: true,
+              id: true,
+              updatedAt: true,
+            },
+          },
         },
       });
       await this.mail.send(res.Owner.email, res);
@@ -368,6 +389,7 @@ export class MaintanceRequestService {
           id,
         },
         data: {
+          protocol: updateMaintanceRequestDto.protocol,
           status: 2,
           workShopId: updateMaintanceRequestDto.workShopId,
           atendedBy: user.name,
@@ -381,7 +403,17 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
-          Workshop: true,
+          Workshop: {
+            select: {
+              Address: true,
+              email: true,
+              name: true,
+              phone: true,
+              createdAt: true,
+              id: true,
+              updatedAt: true,
+            },
+          },
         },
       });
       await this.mail.send(res.Owner.email, res);
@@ -409,6 +441,17 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
+          Workshop: {
+            select: {
+              Address: true,
+              email: true,
+              name: true,
+              phone: true,
+              createdAt: true,
+              id: true,
+              updatedAt: true,
+            },
+          },
         },
       });
 
@@ -460,6 +503,17 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
+          Workshop: {
+            select: {
+              Address: true,
+              email: true,
+              name: true,
+              phone: true,
+              createdAt: true,
+              id: true,
+              updatedAt: true,
+            },
+          },
         },
       });
       await this.mail.send(res.Owner.email, res);
@@ -494,6 +548,17 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
+          Workshop: {
+            select: {
+              Address: true,
+              email: true,
+              name: true,
+              phone: true,
+              createdAt: true,
+              id: true,
+              updatedAt: true,
+            },
+          },
         },
       });
 
@@ -527,6 +592,17 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
+          Workshop: {
+            select: {
+              Address: true,
+              email: true,
+              name: true,
+              phone: true,
+              createdAt: true,
+              id: true,
+              updatedAt: true,
+            },
+          },
         },
       });
 
@@ -560,6 +636,17 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
+          Workshop: {
+            select: {
+              Address: true,
+              email: true,
+              name: true,
+              phone: true,
+              createdAt: true,
+              id: true,
+              updatedAt: true,
+            },
+          },
         },
       });
 
