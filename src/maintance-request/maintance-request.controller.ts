@@ -46,10 +46,10 @@ export class MaintanceRequestController {
     return this.maintanceRequestService.findByWorkshop(req.workshop);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Req() req: Request) {
-    return this.maintanceRequestService.findOne(+id, req.user, req.workshop);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string, @Req() req: Request) {
+  //   return this.maintanceRequestService.findOne(+id, req.user, req.workshop);
+  // }
 
   @Patch(':id')
   @UseInterceptors(FilesInterceptor('files'))

@@ -128,39 +128,6 @@ let MaintanceRequestService = class MaintanceRequestService {
         });
         return { requests };
     }
-    async findOne(id, user, workshop) {
-        const request = await this.db.maintenceRequest.findUnique({
-            where: {
-                id,
-            },
-            include: {
-                budgets: true,
-                Owner: {
-                    select: {
-                        name: true,
-                        phone: true,
-                        email: true,
-                    },
-                },
-                Vehicle: true,
-                evidence: true,
-                Workshop: {
-                    select: {
-                        name: true,
-                        Address: true,
-                        email: true,
-                    },
-                },
-            },
-        });
-        if (!request) {
-            throw new common_1.BadRequestException(`Não foi possivel encontrar a solicitação ID: ${id}, no banco de dados!`);
-        }
-        if (request.ownerId !== user.id && !user.frotas && !workshop) {
-            throw new common_1.BadRequestException('Solicitação encontrada, porem você não tem permissão de vizualizar-la');
-        }
-        return { request };
-    }
     async findByUser(user) {
         const requests = await this.db.maintenceRequest.findMany({
             where: { ownerId: user.id },

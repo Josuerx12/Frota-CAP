@@ -152,46 +152,46 @@ export class MaintanceRequestService {
     return { requests };
   }
 
-  async findOne(id: number, user: IUser, workshop: IWorkshop) {
-    const request = await this.db.maintenceRequest.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        budgets: true,
-        Owner: {
-          select: {
-            name: true,
-            phone: true,
-            email: true,
-          },
-        },
-        Vehicle: true,
-        evidence: true,
-        Workshop: {
-          select: {
-            name: true,
-            Address: true,
-            email: true,
-          },
-        },
-      },
-    });
+  // async findOne(id: number, user: IUser, workshop: IWorkshop) {
+  //   const request = await this.db.maintenceRequest.findUnique({
+  //     where: {
+  //       id,
+  //     },
+  //     include: {
+  //       budgets: true,
+  //       Owner: {
+  //         select: {
+  //           name: true,
+  //           phone: true,
+  //           email: true,
+  //         },
+  //       },
+  //       Vehicle: true,
+  //       evidence: true,
+  //       Workshop: {
+  //         select: {
+  //           name: true,
+  //           Address: true,
+  //           email: true,
+  //         },
+  //       },
+  //     },
+  //   });
 
-    if (!request) {
-      throw new BadRequestException(
-        `Não foi possivel encontrar a solicitação ID: ${id}, no banco de dados!`,
-      );
-    }
+  //   if (!request) {
+  //     throw new BadRequestException(
+  //       `Não foi possivel encontrar a solicitação ID: ${id}, no banco de dados!`,
+  //     );
+  //   }
 
-    if (request.ownerId !== user.id && !user.frotas && !workshop) {
-      throw new BadRequestException(
-        'Solicitação encontrada, porem você não tem permissão de vizualizar-la',
-      );
-    }
+  //   if (request.ownerId !== user.id && !user.frotas && !workshop) {
+  //     throw new BadRequestException(
+  //       'Solicitação encontrada, porem você não tem permissão de vizualizar-la',
+  //     );
+  //   }
 
-    return { request };
-  }
+  //   return { request };
+  // }
 
   async findByUser(user: IUser) {
     const requests = await this.db.maintenceRequest.findMany({

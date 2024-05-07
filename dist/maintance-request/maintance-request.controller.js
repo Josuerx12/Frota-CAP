@@ -34,9 +34,6 @@ let MaintanceRequestController = class MaintanceRequestController {
     findByWorkshop(req) {
         return this.maintanceRequestService.findByWorkshop(req.workshop);
     }
-    findOne(id, req) {
-        return this.maintanceRequestService.findOne(+id, req.user, req.workshop);
-    }
     update(id, updateMaintanceRequestDto, req, files) {
         return this.maintanceRequestService.update(+id, updateMaintanceRequestDto, req.user, req.workshop, files[0], files);
     }
@@ -74,14 +71,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], MaintanceRequestController.prototype, "findByWorkshop", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", void 0)
-], MaintanceRequestController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('files')),
