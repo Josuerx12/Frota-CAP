@@ -3,6 +3,7 @@ export declare class MaintanceRequest implements Prisma.MaintenceRequestUnchecke
     driverPhone: string;
     id?: number;
     driverName: string;
+    evidence?: Prisma.evidenceUncheckedCreateNestedManyWithoutMaintenanceInput;
     km: number;
     os: number;
     protocol?: string;

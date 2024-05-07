@@ -37,8 +37,8 @@ let MaintanceRequestController = class MaintanceRequestController {
     findOne(id, req) {
         return this.maintanceRequestService.findOne(+id, req.user, req.workshop);
     }
-    update(id, updateMaintanceRequestDto, req, file) {
-        return this.maintanceRequestService.update(+id, updateMaintanceRequestDto, req.user, req.workshop, file);
+    update(id, updateMaintanceRequestDto, req, files) {
+        return this.maintanceRequestService.update(+id, updateMaintanceRequestDto, req.user, req.workshop, files[0], files);
     }
     remove(id, req) {
         return this.maintanceRequestService.remove(+id, req.user);
@@ -84,13 +84,13 @@ __decorate([
 ], MaintanceRequestController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('budget')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('files')),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
-    __param(3, (0, common_1.UploadedFile)()),
+    __param(3, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_maintance_request_dto_1.UpdateMaintanceRequestDto, Object, Object]),
+    __metadata("design:paramtypes", [String, update_maintance_request_dto_1.UpdateMaintanceRequestDto, Object, Array]),
     __metadata("design:returntype", void 0)
 ], MaintanceRequestController.prototype, "update", null);
 __decorate([

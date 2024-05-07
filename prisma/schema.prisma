@@ -29,7 +29,7 @@ model Address {
   city       String
   state      String
   workshopId Int      @unique
-  workshop   Workshop @relation(fields: [workshopId], references: [id], onDelete: Cascade)
+  workshop   Workshop @relation(fields: [workshopId], references: [id], onDelete: NoAction)
   country    String
 }
 
@@ -71,13 +71,24 @@ model budget {
   key         String?
   maintenceId Int?
   status      Int?              @default(0)
-  maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: SetNull)
+  maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: Cascade)
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 }
 
+model evidence {
+  id            Int               @id @default(autoincrement())
+  key           String
+  url           String
+  description   String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  maintenanceId Int?
+  maintenance   MaintenceRequest? @relation(fields: [maintenanceId], references: [id], onDelete: Cascade)
+}
+
 model MaintenceRequest {
-  id                Int       @id @default(autoincrement())
+  id                Int        @id @default(autoincrement())
   driverName        String
   driverPhone       String
   km                Int
@@ -88,25 +99,26 @@ model MaintenceRequest {
   serviceEndAt      DateTime?
   serviceTime       Float?
   workShopId        Int?
-  Workshop          Workshop? @relation(fields: [workShopId], references: [id], onDelete: NoAction)
+  Workshop          Workshop?  @relation(fields: [workShopId], references: [id], onDelete: NoAction)
   deadlineToForward DateTime?
-  status            Int?      @default(0)
-  atendedBy         String?   @default("")
+  status            Int?       @default(0)
+  atendedBy         String?    @default("")
   atendedAt         DateTime?
   timeToSchedule    Float?
   scheduledAt       DateTime?
   deadlineToDeliver DateTime?
-  delivered         Boolean   @default(false)
+  delivered         Boolean    @default(false)
   deliveredAt       DateTime?
-  finishedBy        String?   @default("")
+  finishedBy        String?    @default("")
   finishedAt        DateTime?
   checkoutBy        String?
   checkoutAt        DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
   budgets           budget[]
-  Vehicle           Vehicle?  @relation(fields: [plate], references: [plate], onDelete: NoAction)
+  Vehicle           Vehicle?   @relation(fields: [plate], references: [plate], onDelete: NoAction)
   plate             String
-  Owner             User?     @relation(fields: [ownerId], references: [id], onDelete: NoAction)
+  Owner             User?      @relation(fields: [ownerId], references: [id], onDelete: NoAction)
   ownerId           String?
+  evidence          evidence[]
 }

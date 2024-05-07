@@ -15,6 +15,15 @@ export declare class MaintanceRequestService {
     create(createMaintanceRequestDto: CreateMaintanceRequestDto, user: IUser): Promise<string>;
     findAll(user: IUser, workshop: IWorkshop): Promise<{
         requests: ({
+            evidence: {
+                id: number;
+                key: string;
+                url: string;
+                description: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceId: number;
+            }[];
             Workshop: {
                 name: string;
                 email: string;
@@ -85,6 +94,15 @@ export declare class MaintanceRequestService {
     }>;
     findOne(id: number, user: IUser, workshop: IWorkshop): Promise<{
         request: {
+            evidence: {
+                id: number;
+                key: string;
+                url: string;
+                description: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceId: number;
+            }[];
             Workshop: {
                 name: string;
                 email: string;
@@ -155,6 +173,15 @@ export declare class MaintanceRequestService {
     }>;
     findByUser(user: IUser): Promise<{
         requests: ({
+            evidence: {
+                id: number;
+                key: string;
+                url: string;
+                description: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceId: number;
+            }[];
             Workshop: {
                 name: string;
                 email: string;
@@ -225,6 +252,15 @@ export declare class MaintanceRequestService {
     }>;
     findByWorkshop(ws: IWorkshop): Promise<{
         requests: ({
+            evidence: {
+                id: number;
+                key: string;
+                url: string;
+                description: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceId: number;
+            }[];
             Workshop: {
                 name: string;
                 email: string;
@@ -294,6 +330,6 @@ export declare class MaintanceRequestService {
         })[];
     }>;
     basicValidations(request: IMaintenceRequest, updatedCredentials: UpdateMaintanceRequestDto, user?: IUser, workshop?: IWorkshop): void;
-    update(id: number, updateMaintanceRequestDto: UpdateMaintanceRequestDto, user: IUser, workshop: IWorkshop, file: Express.Multer.File): Promise<string>;
+    update(id: number, updateMaintanceRequestDto: UpdateMaintanceRequestDto, user: IUser, workshop: IWorkshop, budget: Express.Multer.File, files: Express.Multer.File[]): Promise<string>;
     remove(id: number, user: IUser): Promise<string>;
 }

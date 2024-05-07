@@ -6,7 +6,7 @@ export class MaintanceRequest
   driverPhone: string;
   id?: number;
   driverName: string;
-
+  evidence?: Prisma.evidenceUncheckedCreateNestedManyWithoutMaintenanceInput;
   km: number;
   os: number;
   protocol?: string;

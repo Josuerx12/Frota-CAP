@@ -9,6 +9,15 @@ export declare class MaintanceRequestController {
     create(createMaintanceRequestDto: CreateMaintanceRequestDto, req: Request): Promise<string>;
     findAll(req: Request): Promise<{
         requests: ({
+            evidence: {
+                id: number;
+                key: string;
+                url: string;
+                description: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceId: number;
+            }[];
             Workshop: {
                 name: string;
                 email: string;
@@ -79,6 +88,15 @@ export declare class MaintanceRequestController {
     }>;
     findByUser(req: Request): Promise<{
         requests: ({
+            evidence: {
+                id: number;
+                key: string;
+                url: string;
+                description: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceId: number;
+            }[];
             Workshop: {
                 name: string;
                 email: string;
@@ -149,6 +167,15 @@ export declare class MaintanceRequestController {
     }>;
     findByWorkshop(req: Request): Promise<{
         requests: ({
+            evidence: {
+                id: number;
+                key: string;
+                url: string;
+                description: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceId: number;
+            }[];
             Workshop: {
                 name: string;
                 email: string;
@@ -219,6 +246,15 @@ export declare class MaintanceRequestController {
     }>;
     findOne(id: string, req: Request): Promise<{
         request: {
+            evidence: {
+                id: number;
+                key: string;
+                url: string;
+                description: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceId: number;
+            }[];
             Workshop: {
                 name: string;
                 email: string;
@@ -287,6 +323,6 @@ export declare class MaintanceRequestController {
             ownerId: string;
         };
     }>;
-    update(id: string, updateMaintanceRequestDto: UpdateMaintanceRequestDto, req: Request, file: Express.Multer.File): Promise<string>;
+    update(id: string, updateMaintanceRequestDto: UpdateMaintanceRequestDto, req: Request, files: Express.Multer.File[]): Promise<string>;
     remove(id: string, req: Request): Promise<string>;
 }

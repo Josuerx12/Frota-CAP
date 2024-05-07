@@ -8,6 +8,7 @@ import { IMaintenceRequest } from 'src/interfaces/MaintenceRequest';
 import axios, { AxiosInstance } from 'axios';
 import { IWorkshop } from 'src/interfaces/Workshop';
 import { S3 } from 'aws-sdk';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class MaintanceRequestService {
@@ -45,12 +46,7 @@ export class MaintanceRequestService {
         req.status === 1
           ? `Estamos agendando a solicitação numero: *${req.id}*, na oficina! \n\n *O.S:* ${req.os}`
           : req.status === 2
-            ? `O Veículo placa: ${req.plate} deverá ser encaminhado para oficina.\n\n
-      *Local 🚩:* ${req.Workshop.name}.\n
-      *Endereço 🔰:* ${req.Workshop.Address.street}, ${req.Workshop.Address.number}.\n
-      *Data e Horario ⌚:*  ${new Date(req.deadlineToDeliver).toLocaleString('pt-BR')}\n
-      *Protocolo 🔐:* ${req.protocol}
-     .`
+            ? `O Veículo placa: ${req.plate} deverá ser encaminhado para oficina.\n\n*Local 🚩:* ${req.Workshop.name}.\n*Endereço 🔰:* ${req.Workshop.Address.street}, ${req.Workshop.Address.number}.\n*Data e Horario ⌚:*  ${new Date(req.deadlineToDeliver).toLocaleString('pt-BR')}\n*Protocolo 🔐:* ${req.protocol}.`
             : req.status === 3
               ? `O Veículo placa: *${req.plate}* Chegou na Oficina.`
               : req.status === 4
@@ -58,11 +54,7 @@ export class MaintanceRequestService {
                 : req.status === 5
                   ? `Veículo placa *${req.plate}* está em manutenção com prazo de entrega até ${new Date(req.deadlineToForward).toLocaleString('pt-BR')}.`
                   : req.status === 6
-                    ? `O veículo placa *${req.plate}* está pronto para retirada.\n\n
-                    *Local 🚩:* ${req.Workshop.name}.\n
-                    *Endereço 🔰:* ${req.Workshop.Address.street}, ${req.Workshop.Address.number}.\n
-                    *Data e Horario ⌚:*  ${new Date(req.deadlineToDeliver).toLocaleString('pt-BR')}\n
-                    *Protocolo 🔐:* ${req.protocol}
+                    ? `O veículo placa *${req.plate}* está pronto para retirada.\n\n*Local 🚩:* ${req.Workshop.name}.\n*Endereço 🔰:* ${req.Workshop.Address.street}, ${req.Workshop.Address.number}.\n*Data e Horario ⌚:*  ${new Date(req.deadlineToDeliver).toLocaleString('pt-BR')}\n*Protocolo 🔐:* ${req.protocol}
                     `
                     : req.status === 7 &&
                       `O veículo placa: ${req.plate} foi retirado por ${req.checkoutBy} as ${new Date(req.checkoutAt).toLocaleString('pt-BR')}`
@@ -146,6 +138,7 @@ export class MaintanceRequestService {
           },
         },
         Vehicle: true,
+        evidence: true,
         Workshop: {
           select: {
             name: true,
@@ -174,6 +167,7 @@ export class MaintanceRequestService {
           },
         },
         Vehicle: true,
+        evidence: true,
         Workshop: {
           select: {
             name: true,
@@ -212,6 +206,7 @@ export class MaintanceRequestService {
           },
         },
         Vehicle: true,
+        evidence: true,
         Workshop: {
           select: {
             name: true,
@@ -238,6 +233,7 @@ export class MaintanceRequestService {
           },
         },
         Vehicle: true,
+        evidence: true,
         Workshop: {
           select: {
             name: true,
@@ -293,8 +289,15 @@ export class MaintanceRequestService {
     updateMaintanceRequestDto: UpdateMaintanceRequestDto,
     user: IUser,
     workshop: IWorkshop,
-    file: Express.Multer.File,
+    budget: Express.Multer.File,
+    files: Express.Multer.File[],
   ) {
+    const s3 = new S3({
+      credentials: {
+        accessKeyId: process.env.AWS_KEY,
+        secretAccessKey: process.env.AWS_SECRET,
+      },
+    });
     const requestFromDb = await this.db.maintenceRequest.findUnique({
       where: { id },
       include: {
@@ -466,19 +469,12 @@ export class MaintanceRequestService {
       });
     }
     if (updateMaintanceRequestDto.status === 4) {
-      const s3 = new S3({
-        credentials: {
-          accessKeyId: process.env.AWS_KEY,
-          secretAccessKey: process.env.AWS_SECRET,
-        },
-      });
-
-      if (file) {
+      if (budget) {
         const fileUploaded = await s3
           .upload({
             Bucket: process.env.BUDGET_BUCKET,
-            Key: Date.now() + file.originalname,
-            Body: file.buffer,
+            Key: v4() + '.' + budget.mimetype.split('/')[1],
+            Body: budget.buffer,
             ACL: 'public-read',
           })
           .promise();
@@ -579,6 +575,27 @@ export class MaintanceRequestService {
 
       const spendedTime = endDate - new Date(serviceStartAt).getTime();
 
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          const fileUploaded = await s3
+            .upload({
+              Bucket: 'evidences-frotascap',
+              Key: v4() + '.' + files[i].mimetype.split('/')[1],
+              ACL: 'public-read',
+              Body: files[i].buffer,
+            })
+            .promise();
+
+          await this.db.evidence.create({
+            data: {
+              maintenanceId: requestFromDb.id,
+              key: fileUploaded.Key,
+              url: fileUploaded.Location,
+            },
+          });
+        }
+      }
+
       const res = await this.db.maintenceRequest.update({
         where: {
           id,
@@ -592,6 +609,7 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
+          evidence: true,
           Workshop: {
             select: {
               Address: true,
@@ -636,6 +654,7 @@ export class MaintanceRequestService {
           budgets: true,
           Owner: true,
           Vehicle: true,
+          evidence: true,
           Workshop: {
             select: {
               Address: true,
