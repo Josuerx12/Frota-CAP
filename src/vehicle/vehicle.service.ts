@@ -34,13 +34,6 @@ export class VehicleService {
   }
 
   async findAll(user: IUser) {
-    if (!user.admin) {
-      throw new BadRequestException(
-        'Você não possui permissão para realizar esta requisição!',
-        { cause: new Error(), description: 'authorization' },
-      );
-    }
-
     const vehicles = await this.db.vehicle.findMany({
       include: {
         provider: true,

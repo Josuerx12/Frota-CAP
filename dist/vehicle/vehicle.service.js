@@ -34,9 +34,6 @@ let VehicleService = class VehicleService {
         return `Veiculo placa: ${vehicle.name}, adicionado com sucesso!`;
     }
     async findAll(user) {
-        if (!user.admin) {
-            throw new common_1.BadRequestException('Você não possui permissão para realizar esta requisição!', { cause: new Error(), description: 'authorization' });
-        }
         const vehicles = await this.db.vehicle.findMany({
             include: {
                 provider: true,
