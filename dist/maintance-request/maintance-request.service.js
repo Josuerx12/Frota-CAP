@@ -551,7 +551,7 @@ let MaintanceRequestService = class MaintanceRequestService {
         return `Solicitação de manutenção ${id}, atualizada com sucesso!`;
     }
     async remove(id, user) {
-        if (user.admin) {
+        if (!user.admin) {
             throw new common_1.BadRequestException('Você não tem permissão para realizar está requisição!');
         }
         const requestFromDb = await this.db.maintenceRequest.findUnique({

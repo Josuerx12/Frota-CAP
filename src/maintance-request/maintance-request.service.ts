@@ -684,7 +684,7 @@ export class MaintanceRequestService {
   }
 
   async remove(id: number, user: IUser) {
-    if (user.admin) {
+    if (!user.admin) {
       throw new BadRequestException(
         'Você não tem permissão para realizar está requisição!',
       );
