@@ -22,14 +22,14 @@ model User {
 }
 
 model Address {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   street     String
   number     Int
   cep        Int
   city       String
   state      String
-  workshopId Int      @unique
-  workshop   Workshop @relation(fields: [workshopId], references: [id], onDelete: NoAction)
+  workshopId Int?      @unique
+  workshop   Workshop? @relation(fields: [workshopId], references: [id], onDelete: Cascade)
   country    String
 }
 
@@ -58,8 +58,8 @@ model Vehicle {
   name             String
   plate            String             @unique
   active           Boolean            @default(true)
-  providerId       Int
-  provider         Provider           @relation(fields: [providerId], references: [id], onDelete: NoAction)
+  providerId       Int?
+  provider         Provider?          @relation(fields: [providerId], references: [id], onDelete: SetNull)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   MaintenceRequest MaintenceRequest[]
@@ -71,7 +71,7 @@ model budget {
   key         String?
   maintenceId Int?
   status      Int?              @default(0)
-  maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: Cascade)
+  maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: SetNull)
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 }
@@ -84,7 +84,7 @@ model evidence {
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   maintenanceId Int?
-  maintenance   MaintenceRequest? @relation(fields: [maintenanceId], references: [id], onDelete: Cascade)
+  maintenance   MaintenceRequest? @relation(fields: [maintenanceId], references: [id], onDelete: SetNull)
 }
 
 model MaintenceRequest {
@@ -99,7 +99,7 @@ model MaintenceRequest {
   serviceEndAt      DateTime?
   serviceTime       Float?
   workShopId        Int?
-  Workshop          Workshop?  @relation(fields: [workShopId], references: [id], onDelete: NoAction)
+  Workshop          Workshop?  @relation(fields: [workShopId], references: [id], onDelete: SetNull)
   deadlineToForward DateTime?
   status            Int?       @default(0)
   atendedBy         String?    @default("")
@@ -116,9 +116,9 @@ model MaintenceRequest {
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
   budgets           budget[]
-  Vehicle           Vehicle?   @relation(fields: [plate], references: [plate], onDelete: NoAction)
-  plate             String
-  Owner             User?      @relation(fields: [ownerId], references: [id], onDelete: NoAction)
+  Vehicle           Vehicle?   @relation(fields: [plate], references: [plate], onDelete: SetNull)
+  plate             String?
+  Owner             User?      @relation(fields: [ownerId], references: [id], onDelete: SetNull)
   ownerId           String?
   evidence          evidence[]
 }
