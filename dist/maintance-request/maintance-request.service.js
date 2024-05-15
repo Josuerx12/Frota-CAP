@@ -125,6 +125,9 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             },
+            orderBy: {
+                id: 'desc',
+            },
         });
         return { requests };
     }
@@ -150,6 +153,9 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             },
+            orderBy: {
+                id: 'desc',
+            },
         });
         return { requests };
     }
@@ -174,6 +180,9 @@ let MaintanceRequestService = class MaintanceRequestService {
                         email: true,
                     },
                 },
+            },
+            orderBy: {
+                id: 'desc',
             },
         });
         return { requests };

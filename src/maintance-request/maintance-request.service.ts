@@ -147,6 +147,9 @@ export class MaintanceRequestService {
           },
         },
       },
+      orderBy: {
+        id: 'desc',
+      },
     });
 
     return { requests };
@@ -215,6 +218,9 @@ export class MaintanceRequestService {
           },
         },
       },
+      orderBy: {
+        id: 'desc',
+      },
     });
 
     return { requests };
@@ -241,6 +247,9 @@ export class MaintanceRequestService {
             email: true,
           },
         },
+      },
+      orderBy: {
+        id: 'desc',
       },
     });
 
