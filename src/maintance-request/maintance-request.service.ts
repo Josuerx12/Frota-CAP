@@ -710,11 +710,6 @@ export class MaintanceRequestService {
           Key: requestFromDb.osDocuments[i].key,
         });
       }
-      this.db.osDocument.deleteMany({
-        where: {
-          maintenanceRequestId: requestFromDb.id,
-        },
-      });
     }
 
     if (requestFromDb.budgets) {
@@ -724,11 +719,6 @@ export class MaintanceRequestService {
           Key: requestFromDb.budgets[i].key,
         }).send();
       }
-      this.db.budget.deleteMany({
-        where: {
-          maintenceId: requestFromDb.id,
-        },
-      });
     }
 
     if (requestFromDb.evidence) {
@@ -738,11 +728,6 @@ export class MaintanceRequestService {
           Key: requestFromDb.evidence[i].key,
         }).send();
       }
-      this.db.evidence.deleteMany({
-        where: {
-          maintenanceId: requestFromDb.id,
-        },
-      });
     }
 
     const deletedRequest = await this.db.maintenceRequest.delete({
