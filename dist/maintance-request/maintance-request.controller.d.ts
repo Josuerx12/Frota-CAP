@@ -9,6 +9,15 @@ export declare class MaintanceRequestController {
     create(createMaintanceRequestDto: CreateMaintanceRequestDto, req: Request): Promise<string>;
     findAll(req: Request): Promise<{
         requests: ({
+            osDocument: {
+                id: number;
+                url: string;
+                key: string;
+                maintananceId: number;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenceRequestId: number;
+            }[];
             evidence: {
                 id: number;
                 key: string;
@@ -88,6 +97,15 @@ export declare class MaintanceRequestController {
     }>;
     findByUser(req: Request): Promise<{
         requests: ({
+            osDocument: {
+                id: number;
+                url: string;
+                key: string;
+                maintananceId: number;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenceRequestId: number;
+            }[];
             evidence: {
                 id: number;
                 key: string;
@@ -167,6 +185,15 @@ export declare class MaintanceRequestController {
     }>;
     findByWorkshop(req: Request): Promise<{
         requests: ({
+            osDocument: {
+                id: number;
+                url: string;
+                key: string;
+                maintananceId: number;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenceRequestId: number;
+            }[];
             evidence: {
                 id: number;
                 key: string;

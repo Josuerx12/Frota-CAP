@@ -86,14 +86,14 @@ let MaintanceRequestService = class MaintanceRequestService {
                 Owner: true,
             },
         });
-        await this.mail.send(request.Owner.email, request);
-        await this.api
+        this.mail.send(request.Owner.email, request);
+        this.api
             .post('/send-text', {
             phone: `55${request.Owner.phone}`,
             message: `*Frota CAP : Manutenção de Veículos*\n\n*🆕 Sua solicitação Nº *${request.id}* foi recebida 🆕*\n\nEm breve iniciaremos o atendimento da sua O.S Nº *${request.os}*`,
         })
             .catch((err) => console.log(err.message));
-        await this.api
+        this.api
             .post('/send-text', {
             phone: `55${request.driverPhone}`,
             message: `*Frota CAP : Manutenção de Veículos*\n\n*🆕 Seu chamado Nº ${request.id} foi recebido 🆕*\n\nIremos agendar seu chamado na Oficina`,
@@ -117,6 +117,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                 },
                 Vehicle: true,
                 evidence: true,
+                osDocument: true,
                 Workshop: {
                     select: {
                         name: true,
@@ -145,6 +146,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                 },
                 Vehicle: true,
                 evidence: true,
+                osDocument: true,
                 Workshop: {
                     select: {
                         name: true,
@@ -173,6 +175,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                 },
                 Vehicle: true,
                 evidence: true,
+                osDocument: true,
                 Workshop: {
                     select: {
                         name: true,
@@ -205,7 +208,7 @@ let MaintanceRequestService = class MaintanceRequestService {
             throw new common_1.BadRequestException('Você não tem autorização para realizar essa requisição!');
         }
     }
-    async update(id, updateMaintanceRequestDto, user, workshop, budget, files) {
+    async update(id, updateMaintanceRequestDto, user, workshop, files) {
         const s3 = new aws_sdk_1.S3({
             credentials: {
                 accessKeyId: process.env.AWS_KEY,
@@ -268,12 +271,12 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             });
-            await this.mail.send(res.Owner.email, res);
-            await this.api.post('/send-text', {
+            this.mail.send(res.Owner.email, res);
+            this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
-            await this.api.post('/send-text', {
+            this.api.post('/send-text', {
                 phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
@@ -317,12 +320,31 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             });
-            await this.mail.send(res.Owner.email, res);
-            await this.api.post('/send-text', {
+            if (files[0]) {
+                s3.upload({
+                    Bucket: 'os-documents-cap',
+                    Key: (0, uuid_1.v4)() + '.' + files[0].mimetype.split('/')[1],
+                    Body: files[0].buffer,
+                    ACL: 'public-read',
+                })
+                    .promise()
+                    .then((result) => {
+                    this.db.osDocument.create({
+                        data: {
+                            maintananceId: requestFromDb.id,
+                            url: result.Location,
+                            key: result.Key,
+                        },
+                    });
+                });
+            }
+            this.mail.send(res.Owner.email, res);
+            this.mail.send(res.Workshop.email, res);
+            this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
-            await this.api.post('/send-text', {
+            this.api.post('/send-text', {
                 phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
@@ -354,32 +376,33 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             });
-            await this.mail.send(res.Owner.email, res);
-            await this.api.post('/send-text', {
+            this.mail.send(res.Owner.email, res);
+            this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
-            await this.api.post('/send-text', {
+            this.api.post('/send-text', {
                 phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
         }
         if (updateMaintanceRequestDto.status === 4) {
-            if (budget) {
-                const fileUploaded = await s3
-                    .upload({
+            if (files[0]) {
+                s3.upload({
                     Bucket: process.env.BUDGET_BUCKET,
-                    Key: (0, uuid_1.v4)() + '.' + budget.mimetype.split('/')[1],
-                    Body: budget.buffer,
+                    Key: (0, uuid_1.v4)() + '.' + files[0].mimetype.split('/')[1],
+                    Body: files[0].buffer,
                     ACL: 'public-read',
                 })
-                    .promise();
-                await this.db.budget.create({
-                    data: {
-                        maintenceId: requestFromDb.id,
-                        key: fileUploaded.Key,
-                        url: fileUploaded.Location,
-                    },
+                    .promise()
+                    .then((result) => {
+                    this.db.budget.create({
+                        data: {
+                            maintenceId: requestFromDb.id,
+                            key: result.Key,
+                            url: result.Location,
+                        },
+                    });
                 });
             }
             const res = await this.db.maintenceRequest.update({
@@ -406,12 +429,12 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             });
-            await this.mail.send(res.Owner.email, res);
-            await this.api.post('/send-text', {
+            this.mail.send(res.Owner.email, res);
+            this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
-            await this.api.post('/send-text', {
+            this.api.post('/send-text', {
                 phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
@@ -446,12 +469,12 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             });
-            await this.mail.send(res.Owner.email, res);
-            await this.api.post('/send-text', {
+            this.mail.send(res.Owner.email, res);
+            this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
-            await this.api.post('/send-text', {
+            this.api.post('/send-text', {
                 phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
@@ -462,20 +485,21 @@ let MaintanceRequestService = class MaintanceRequestService {
             const spendedTime = endDate - new Date(serviceStartAt).getTime();
             if (files) {
                 for (let i = 0; i < files.length; i++) {
-                    const fileUploaded = await s3
-                        .upload({
+                    s3.upload({
                         Bucket: 'evidences-frotascap',
                         Key: (0, uuid_1.v4)() + '.' + files[i].mimetype.split('/')[1],
                         ACL: 'public-read',
                         Body: files[i].buffer,
                     })
-                        .promise();
-                    await this.db.evidence.create({
-                        data: {
-                            maintenanceId: requestFromDb.id,
-                            key: fileUploaded.Key,
-                            url: fileUploaded.Location,
-                        },
+                        .promise()
+                        .then((result) => {
+                        this.db.evidence.create({
+                            data: {
+                                maintenanceId: requestFromDb.id,
+                                key: result.Key,
+                                url: result.Location,
+                            },
+                        });
                     });
                 }
             }
@@ -506,12 +530,12 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             });
-            await this.mail.send(res.Owner.email, res);
-            await this.api.post('/send-text', {
+            this.mail.send(res.Owner.email, res);
+            this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
-            await this.api.post('/send-text', {
+            this.api.post('/send-text', {
                 phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
@@ -547,12 +571,12 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             });
-            await this.mail.send(res.Owner.email, res);
-            await this.api.post('/send-text', {
+            this.mail.send(res.Owner.email, res);
+            this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
-            await this.api.post('/send-text', {
+            this.api.post('/send-text', {
                 phone: `55${res.driverPhone}`,
                 message: this.wppMessageTemplate(res),
             });
@@ -560,11 +584,22 @@ let MaintanceRequestService = class MaintanceRequestService {
         return `Solicitação de manutenção ${id}, atualizada com sucesso!`;
     }
     async remove(id, user) {
+        const s3 = new aws_sdk_1.S3({
+            credentials: {
+                accessKeyId: process.env.AWS_KEY,
+                secretAccessKey: process.env.AWS_SECRET,
+            },
+        });
         if (!user.admin) {
             throw new common_1.BadRequestException('Você não tem permissão para realizar está requisição!');
         }
         const requestFromDb = await this.db.maintenceRequest.findUnique({
             where: { id },
+            include: {
+                osDocument: true,
+                budgets: true,
+                evidence: true,
+            },
         });
         if (!requestFromDb) {
             throw new common_1.BadRequestException(`Não foi possivel encontrar solicitação com a id ${id}, informada!`);
@@ -572,6 +607,45 @@ let MaintanceRequestService = class MaintanceRequestService {
         const deletedRequest = await this.db.maintenceRequest.delete({
             where: { id },
         });
+        if (requestFromDb.osDocument) {
+            for (let i = 0; requestFromDb.osDocument.length > i; i++) {
+                s3.deleteObject({
+                    Bucket: 'os-documents-cap',
+                    Key: requestFromDb.osDocument[i].key,
+                });
+            }
+            this.db.osDocument.deleteMany({
+                where: {
+                    maintananceId: requestFromDb.id,
+                },
+            });
+        }
+        if (requestFromDb.budgets) {
+            for (let i = 0; requestFromDb.budgets.length > i; i++) {
+                s3.deleteObject({
+                    Bucket: 'frotascap-budgets',
+                    Key: requestFromDb.budgets[i].key,
+                });
+            }
+            this.db.budget.deleteMany({
+                where: {
+                    maintenceId: requestFromDb.id,
+                },
+            });
+        }
+        if (requestFromDb.evidence) {
+            for (let i = 0; requestFromDb.evidence.length > i; i++) {
+                s3.deleteObject({
+                    Bucket: 'evidences-frotascap',
+                    Key: requestFromDb.evidence[i].key,
+                });
+            }
+            this.db.evidence.deleteMany({
+                where: {
+                    maintenanceId: requestFromDb.id,
+                },
+            });
+        }
         return `Solicitação ID: ${deletedRequest.id}, deletada com sucesso!`;
     }
 };

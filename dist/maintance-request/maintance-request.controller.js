@@ -35,7 +35,7 @@ let MaintanceRequestController = class MaintanceRequestController {
         return this.maintanceRequestService.findByWorkshop(req.workshop);
     }
     update(id, updateMaintanceRequestDto, req, files) {
-        return this.maintanceRequestService.update(+id, updateMaintanceRequestDto, req.user, req.workshop, files[0], files);
+        return this.maintanceRequestService.update(+id, updateMaintanceRequestDto, req.user, req.workshop, files);
     }
     remove(id, req) {
         return this.maintanceRequestService.remove(+id, req.user);

@@ -64,7 +64,6 @@ export class MaintanceRequestController {
       updateMaintanceRequestDto,
       req.user,
       req.workshop,
-      files[0],
       files,
     );
   }

@@ -15,6 +15,15 @@ export declare class MaintanceRequestService {
     create(createMaintanceRequestDto: CreateMaintanceRequestDto, user: IUser): Promise<string>;
     findAll(user: IUser, workshop: IWorkshop): Promise<{
         requests: ({
+            osDocument: {
+                id: number;
+                url: string;
+                key: string;
+                maintananceId: number;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenceRequestId: number;
+            }[];
             evidence: {
                 id: number;
                 key: string;
@@ -94,6 +103,15 @@ export declare class MaintanceRequestService {
     }>;
     findByUser(user: IUser): Promise<{
         requests: ({
+            osDocument: {
+                id: number;
+                url: string;
+                key: string;
+                maintananceId: number;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenceRequestId: number;
+            }[];
             evidence: {
                 id: number;
                 key: string;
@@ -173,6 +191,15 @@ export declare class MaintanceRequestService {
     }>;
     findByWorkshop(ws: IWorkshop): Promise<{
         requests: ({
+            osDocument: {
+                id: number;
+                url: string;
+                key: string;
+                maintananceId: number;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenceRequestId: number;
+            }[];
             evidence: {
                 id: number;
                 key: string;
@@ -251,6 +278,6 @@ export declare class MaintanceRequestService {
         })[];
     }>;
     basicValidations(request: IMaintenceRequest, updatedCredentials: UpdateMaintanceRequestDto, user?: IUser, workshop?: IWorkshop): void;
-    update(id: number, updateMaintanceRequestDto: UpdateMaintanceRequestDto, user: IUser, workshop: IWorkshop, budget: Express.Multer.File, files: Express.Multer.File[]): Promise<string>;
+    update(id: number, updateMaintanceRequestDto: UpdateMaintanceRequestDto, user: IUser, workshop: IWorkshop, files: Express.Multer.File[]): Promise<string>;
     remove(id: number, user: IUser): Promise<string>;
 }

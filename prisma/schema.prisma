@@ -65,6 +65,17 @@ model Vehicle {
   MaintenceRequest MaintenceRequest[]
 }
 
+model osDocument {
+  id                 Int               @id @default(autoincrement())
+  url                String
+  key                String?
+  maintananceId      Int?
+  maintananceRequest MaintenceRequest? @relation(fields: [maintenceRequestId], references: [id], onDelete: SetNull)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  maintenceRequestId Int?
+}
+
 model budget {
   id          Int               @id @default(autoincrement())
   url         String
@@ -88,7 +99,7 @@ model evidence {
 }
 
 model MaintenceRequest {
-  id                Int        @id @default(autoincrement())
+  id                Int          @id @default(autoincrement())
   driverName        String
   driverPhone       String
   km                Int
@@ -99,26 +110,27 @@ model MaintenceRequest {
   serviceEndAt      DateTime?
   serviceTime       Float?
   workShopId        Int?
-  Workshop          Workshop?  @relation(fields: [workShopId], references: [id], onDelete: SetNull)
+  Workshop          Workshop?    @relation(fields: [workShopId], references: [id], onDelete: SetNull)
   deadlineToForward DateTime?
-  status            Int?       @default(0)
-  atendedBy         String?    @default("")
+  status            Int?         @default(0)
+  atendedBy         String?      @default("")
   atendedAt         DateTime?
   timeToSchedule    Float?
   scheduledAt       DateTime?
   deadlineToDeliver DateTime?
-  delivered         Boolean    @default(false)
+  delivered         Boolean      @default(false)
   deliveredAt       DateTime?
-  finishedBy        String?    @default("")
+  finishedBy        String?      @default("")
   finishedAt        DateTime?
   checkoutBy        String?
   checkoutAt        DateTime?
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
   budgets           budget[]
-  Vehicle           Vehicle?   @relation(fields: [plate], references: [plate], onDelete: SetNull)
+  Vehicle           Vehicle?     @relation(fields: [plate], references: [plate], onDelete: SetNull)
   plate             String?
-  Owner             User?      @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  Owner             User?        @relation(fields: [ownerId], references: [id], onDelete: SetNull)
   ownerId           String?
   evidence          evidence[]
+  osDocument        osDocument[]
 }
