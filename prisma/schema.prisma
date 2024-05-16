@@ -109,7 +109,7 @@ model MaintenceRequest {
   serviceEndAt      DateTime?
   serviceTime       Float?
   workShopId        Int?
-  Workshop          Workshop?    @relation(fields: [workShopId], references: [id], onDelete: SetNull)
+  Workshop          Workshop?    @relation(fields: [workShopId], references: [id], onDelete: NoAction)
   deadlineToForward DateTime?
   status            Int?         @default(0)
   atendedBy         String?      @default("")
@@ -126,9 +126,9 @@ model MaintenceRequest {
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
   budgets           budget[]
-  Vehicle           Vehicle?     @relation(fields: [plate], references: [plate], onDelete: SetNull)
+  Vehicle           Vehicle?     @relation(fields: [plate], references: [plate], onDelete: NoAction)
   plate             String?
-  Owner             User?        @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  Owner             User?        @relation(fields: [ownerId], references: [id], onDelete: NoAction)
   ownerId           String?
   evidence          evidence[]
   osDocuments       osDocument[]
