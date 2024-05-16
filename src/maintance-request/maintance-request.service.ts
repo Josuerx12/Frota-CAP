@@ -139,7 +139,7 @@ export class MaintanceRequestService {
         },
         Vehicle: true,
         evidence: true,
-        osDocument: true,
+        osDocuments: true,
         Workshop: {
           select: {
             name: true,
@@ -170,7 +170,7 @@ export class MaintanceRequestService {
         },
         Vehicle: true,
         evidence: true,
-        osDocument: true,
+        osDocuments: true,
         Workshop: {
           select: {
             name: true,
@@ -201,7 +201,7 @@ export class MaintanceRequestService {
         },
         Vehicle: true,
         evidence: true,
-        osDocument: true,
+        osDocuments: true,
         Workshop: {
           select: {
             name: true,
@@ -402,7 +402,7 @@ export class MaintanceRequestService {
 
         await this.db.osDocument.create({
           data: {
-            maintananceId: requestFromDb.id,
+            maintenanceRequestId: requestFromDb.id,
             url: fileUploaded.Location,
             key: fileUploaded.Key,
           },
@@ -691,7 +691,7 @@ export class MaintanceRequestService {
     const requestFromDb = await this.db.maintenceRequest.findUnique({
       where: { id },
       include: {
-        osDocument: true,
+        osDocuments: true,
         budgets: true,
         evidence: true,
       },
@@ -706,16 +706,16 @@ export class MaintanceRequestService {
     const deletedRequest = await this.db.maintenceRequest.delete({
       where: { id },
     });
-    if (requestFromDb.osDocument) {
-      for (let i = 0; requestFromDb.osDocument.length > i; i++) {
+    if (requestFromDb.osDocuments) {
+      for (let i = 0; requestFromDb.osDocuments.length > i; i++) {
         s3.deleteObject({
           Bucket: 'os-documents-cap',
-          Key: requestFromDb.osDocument[i].key,
+          Key: requestFromDb.osDocuments[i].key,
         });
       }
       this.db.osDocument.deleteMany({
         where: {
-          maintananceId: requestFromDb.id,
+          maintenanceRequestId: requestFromDb.id,
         },
       });
     }

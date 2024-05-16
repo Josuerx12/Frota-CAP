@@ -66,14 +66,13 @@ model Vehicle {
 }
 
 model osDocument {
-  id                 Int               @id @default(autoincrement())
-  url                String
-  key                String?
-  maintananceId      Int?
-  maintananceRequest MaintenceRequest? @relation(fields: [maintenceRequestId], references: [id], onDelete: SetNull)
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
-  maintenceRequestId Int?
+  id                   Int               @id @default(autoincrement())
+  url                  String
+  key                  String?
+  maintenanceRequest   MaintenceRequest? @relation(fields: [maintenanceRequestId], references: [id], onDelete: SetNull)
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  maintenanceRequestId Int?
 }
 
 model budget {
@@ -132,5 +131,5 @@ model MaintenceRequest {
   Owner             User?        @relation(fields: [ownerId], references: [id], onDelete: SetNull)
   ownerId           String?
   evidence          evidence[]
-  osDocument        osDocument[]
+  osDocuments       osDocument[]
 }

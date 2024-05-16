@@ -15,15 +15,6 @@ export declare class MaintanceRequestService {
     create(createMaintanceRequestDto: CreateMaintanceRequestDto, user: IUser): Promise<string>;
     findAll(user: IUser, workshop: IWorkshop): Promise<{
         requests: ({
-            osDocument: {
-                id: number;
-                url: string;
-                key: string;
-                maintananceId: number;
-                createdAt: Date;
-                updatedAt: Date;
-                maintenceRequestId: number;
-            }[];
             evidence: {
                 id: number;
                 key: string;
@@ -70,6 +61,14 @@ export declare class MaintanceRequestService {
                 email: string;
                 phone: string;
             };
+            osDocuments: {
+                id: number;
+                url: string;
+                key: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceRequestId: number;
+            }[];
         } & {
             id: number;
             driverName: string;
@@ -103,15 +102,6 @@ export declare class MaintanceRequestService {
     }>;
     findByUser(user: IUser): Promise<{
         requests: ({
-            osDocument: {
-                id: number;
-                url: string;
-                key: string;
-                maintananceId: number;
-                createdAt: Date;
-                updatedAt: Date;
-                maintenceRequestId: number;
-            }[];
             evidence: {
                 id: number;
                 key: string;
@@ -158,6 +148,14 @@ export declare class MaintanceRequestService {
                 email: string;
                 phone: string;
             };
+            osDocuments: {
+                id: number;
+                url: string;
+                key: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceRequestId: number;
+            }[];
         } & {
             id: number;
             driverName: string;
@@ -191,15 +189,6 @@ export declare class MaintanceRequestService {
     }>;
     findByWorkshop(ws: IWorkshop): Promise<{
         requests: ({
-            osDocument: {
-                id: number;
-                url: string;
-                key: string;
-                maintananceId: number;
-                createdAt: Date;
-                updatedAt: Date;
-                maintenceRequestId: number;
-            }[];
             evidence: {
                 id: number;
                 key: string;
@@ -246,6 +235,14 @@ export declare class MaintanceRequestService {
                 email: string;
                 phone: string;
             };
+            osDocuments: {
+                id: number;
+                url: string;
+                key: string;
+                createdAt: Date;
+                updatedAt: Date;
+                maintenanceRequestId: number;
+            }[];
         } & {
             id: number;
             driverName: string;
