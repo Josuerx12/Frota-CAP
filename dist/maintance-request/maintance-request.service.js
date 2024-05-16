@@ -321,22 +321,20 @@ let MaintanceRequestService = class MaintanceRequestService {
                 },
             });
             if (files) {
-                await s3
+                const fileUploaded = await s3
                     .upload({
                     Bucket: 'os-documents-cap',
                     Key: (0, uuid_1.v4)() + '.' + files[0].mimetype.split('/')[1],
                     Body: files[0].buffer,
                     ACL: 'public-read',
                 })
-                    .promise()
-                    .then((result) => {
-                    this.db.osDocument.create({
-                        data: {
-                            maintananceId: requestFromDb.id,
-                            url: result.Location,
-                            key: result.Key,
-                        },
-                    });
+                    .promise();
+                await this.db.osDocument.create({
+                    data: {
+                        maintananceId: requestFromDb.id,
+                        url: fileUploaded.Location,
+                        key: fileUploaded.Key,
+                    },
                 });
             }
             this.mail.send(res.Owner.email, res);
@@ -389,22 +387,20 @@ let MaintanceRequestService = class MaintanceRequestService {
         }
         if (updateMaintanceRequestDto.status === 4) {
             if (files) {
-                await s3
+                const fileUploaded = await s3
                     .upload({
                     Bucket: process.env.BUDGET_BUCKET,
                     Key: (0, uuid_1.v4)() + '.' + files[0].mimetype.split('/')[1],
                     Body: files[0].buffer,
                     ACL: 'public-read',
                 })
-                    .promise()
-                    .then((result) => {
-                    this.db.budget.create({
-                        data: {
-                            maintenceId: requestFromDb.id,
-                            key: result.Key,
-                            url: result.Location,
-                        },
-                    });
+                    .promise();
+                await this.db.budget.create({
+                    data: {
+                        maintenceId: requestFromDb.id,
+                        key: fileUploaded.Key,
+                        url: fileUploaded.Location,
+                    },
                 });
             }
             const res = await this.db.maintenceRequest.update({
@@ -487,22 +483,20 @@ let MaintanceRequestService = class MaintanceRequestService {
             const spendedTime = endDate - new Date(serviceStartAt).getTime();
             if (files) {
                 for (let i = 0; i < files.length; i++) {
-                    await s3
+                    const fileUploaded = await s3
                         .upload({
                         Bucket: 'evidences-frotascap',
                         Key: (0, uuid_1.v4)() + '.' + files[i].mimetype.split('/')[1],
                         ACL: 'public-read',
                         Body: files[i].buffer,
                     })
-                        .promise()
-                        .then((result) => {
-                        this.db.evidence.create({
-                            data: {
-                                maintenanceId: requestFromDb.id,
-                                key: result.Key,
-                                url: result.Location,
-                            },
-                        });
+                        .promise();
+                    await this.db.evidence.create({
+                        data: {
+                            maintenanceId: requestFromDb.id,
+                            key: fileUploaded.Key,
+                            url: fileUploaded.Location,
+                        },
                     });
                 }
             }
