@@ -320,8 +320,9 @@ let MaintanceRequestService = class MaintanceRequestService {
                     },
                 },
             });
-            if (files[0]) {
-                s3.upload({
+            if (files) {
+                await s3
+                    .upload({
                     Bucket: 'os-documents-cap',
                     Key: (0, uuid_1.v4)() + '.' + files[0].mimetype.split('/')[1],
                     Body: files[0].buffer,
@@ -387,8 +388,9 @@ let MaintanceRequestService = class MaintanceRequestService {
             });
         }
         if (updateMaintanceRequestDto.status === 4) {
-            if (files[0]) {
-                s3.upload({
+            if (files) {
+                await s3
+                    .upload({
                     Bucket: process.env.BUDGET_BUCKET,
                     Key: (0, uuid_1.v4)() + '.' + files[0].mimetype.split('/')[1],
                     Body: files[0].buffer,
@@ -485,7 +487,8 @@ let MaintanceRequestService = class MaintanceRequestService {
             const spendedTime = endDate - new Date(serviceStartAt).getTime();
             if (files) {
                 for (let i = 0; i < files.length; i++) {
-                    s3.upload({
+                    await s3
+                        .upload({
                         Bucket: 'evidences-frotascap',
                         Key: (0, uuid_1.v4)() + '.' + files[i].mimetype.split('/')[1],
                         ACL: 'public-read',
@@ -625,7 +628,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                 s3.deleteObject({
                     Bucket: 'frotascap-budgets',
                     Key: requestFromDb.budgets[i].key,
-                });
+                }).send();
             }
             this.db.budget.deleteMany({
                 where: {
@@ -638,7 +641,7 @@ let MaintanceRequestService = class MaintanceRequestService {
                 s3.deleteObject({
                     Bucket: 'evidences-frotascap',
                     Key: requestFromDb.evidence[i].key,
-                });
+                }).send();
             }
             this.db.evidence.deleteMany({
                 where: {

@@ -390,13 +390,14 @@ export class MaintanceRequestService {
         },
       });
 
-      if (files[0]) {
-        s3.upload({
-          Bucket: 'os-documents-cap',
-          Key: v4() + '.' + files[0].mimetype.split('/')[1],
-          Body: files[0].buffer,
-          ACL: 'public-read',
-        })
+      if (files) {
+        await s3
+          .upload({
+            Bucket: 'os-documents-cap',
+            Key: v4() + '.' + files[0].mimetype.split('/')[1],
+            Body: files[0].buffer,
+            ACL: 'public-read',
+          })
           .promise()
           .then((result) => {
             this.db.osDocument.create({
@@ -460,13 +461,14 @@ export class MaintanceRequestService {
       });
     }
     if (updateMaintanceRequestDto.status === 4) {
-      if (files[0]) {
-        s3.upload({
-          Bucket: process.env.BUDGET_BUCKET,
-          Key: v4() + '.' + files[0].mimetype.split('/')[1],
-          Body: files[0].buffer,
-          ACL: 'public-read',
-        })
+      if (files) {
+        await s3
+          .upload({
+            Bucket: process.env.BUDGET_BUCKET,
+            Key: v4() + '.' + files[0].mimetype.split('/')[1],
+            Body: files[0].buffer,
+            ACL: 'public-read',
+          })
           .promise()
           .then((result) => {
             this.db.budget.create({
@@ -568,12 +570,13 @@ export class MaintanceRequestService {
 
       if (files) {
         for (let i = 0; i < files.length; i++) {
-          s3.upload({
-            Bucket: 'evidences-frotascap',
-            Key: v4() + '.' + files[i].mimetype.split('/')[1],
-            ACL: 'public-read',
-            Body: files[i].buffer,
-          })
+          await s3
+            .upload({
+              Bucket: 'evidences-frotascap',
+              Key: v4() + '.' + files[i].mimetype.split('/')[1],
+              ACL: 'public-read',
+              Body: files[i].buffer,
+            })
             .promise()
             .then((result) => {
               this.db.evidence.create({
@@ -725,7 +728,7 @@ export class MaintanceRequestService {
         s3.deleteObject({
           Bucket: 'frotascap-budgets',
           Key: requestFromDb.budgets[i].key,
-        });
+        }).send();
       }
       this.db.budget.deleteMany({
         where: {
@@ -739,7 +742,7 @@ export class MaintanceRequestService {
         s3.deleteObject({
           Bucket: 'evidences-frotascap',
           Key: requestFromDb.evidence[i].key,
-        });
+        }).send();
       }
       this.db.evidence.deleteMany({
         where: {
