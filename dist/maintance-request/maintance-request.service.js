@@ -606,13 +606,8 @@ let MaintanceRequestService = class MaintanceRequestService {
                 s3.deleteObject({
                     Bucket: 'os-documents-cap',
                     Key: requestFromDb.osDocuments[i].key,
-                });
+                }).send();
             }
-            this.db.osDocument.deleteMany({
-                where: {
-                    maintenanceRequestId: requestFromDb.id,
-                },
-            });
         }
         if (requestFromDb.budgets) {
             for (let i = 0; requestFromDb.budgets.length > i; i++) {
@@ -621,11 +616,6 @@ let MaintanceRequestService = class MaintanceRequestService {
                     Key: requestFromDb.budgets[i].key,
                 }).send();
             }
-            this.db.budget.deleteMany({
-                where: {
-                    maintenceId: requestFromDb.id,
-                },
-            });
         }
         if (requestFromDb.evidence) {
             for (let i = 0; requestFromDb.evidence.length > i; i++) {
@@ -634,11 +624,6 @@ let MaintanceRequestService = class MaintanceRequestService {
                     Key: requestFromDb.evidence[i].key,
                 }).send();
             }
-            this.db.evidence.deleteMany({
-                where: {
-                    maintenanceId: requestFromDb.id,
-                },
-            });
         }
         const deletedRequest = await this.db.maintenceRequest.delete({
             where: { id },

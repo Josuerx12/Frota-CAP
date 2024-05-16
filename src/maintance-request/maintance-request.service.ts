@@ -708,7 +708,7 @@ export class MaintanceRequestService {
         s3.deleteObject({
           Bucket: 'os-documents-cap',
           Key: requestFromDb.osDocuments[i].key,
-        });
+        }).send();
       }
     }
 
