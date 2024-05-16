@@ -59,7 +59,7 @@ model Vehicle {
   plate            String             @unique
   active           Boolean            @default(true)
   providerId       Int?
-  provider         Provider?          @relation(fields: [providerId], references: [id], onDelete: SetNull)
+  provider         Provider?          @relation(fields: [providerId], references: [id], onDelete: NoAction)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   MaintenceRequest MaintenceRequest[]
@@ -69,7 +69,7 @@ model osDocument {
   id                   Int               @id @default(autoincrement())
   url                  String
   key                  String?
-  maintenanceRequest   MaintenceRequest? @relation(fields: [maintenanceRequestId], references: [id], onDelete: SetNull)
+  maintenanceRequest   MaintenceRequest? @relation(fields: [maintenanceRequestId], references: [id], onDelete: NoAction)
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
   maintenanceRequestId Int?
@@ -81,7 +81,7 @@ model budget {
   key         String?
   maintenceId Int?
   status      Int?              @default(0)
-  maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: SetNull)
+  maintence   MaintenceRequest? @relation(fields: [maintenceId], references: [id], onDelete: NoAction)
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 }
