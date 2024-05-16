@@ -601,9 +601,6 @@ let MaintanceRequestService = class MaintanceRequestService {
         if (!requestFromDb) {
             throw new common_1.BadRequestException(`Não foi possivel encontrar solicitação com a id ${id}, informada!`);
         }
-        const deletedRequest = await this.db.maintenceRequest.delete({
-            where: { id },
-        });
         if (requestFromDb.osDocuments) {
             for (let i = 0; requestFromDb.osDocuments.length > i; i++) {
                 s3.deleteObject({
@@ -643,6 +640,9 @@ let MaintanceRequestService = class MaintanceRequestService {
                 },
             });
         }
+        const deletedRequest = await this.db.maintenceRequest.delete({
+            where: { id },
+        });
         return `Solicitação ID: ${deletedRequest.id}, deletada com sucesso!`;
     }
 };

@@ -703,9 +703,6 @@ export class MaintanceRequestService {
       );
     }
 
-    const deletedRequest = await this.db.maintenceRequest.delete({
-      where: { id },
-    });
     if (requestFromDb.osDocuments) {
       for (let i = 0; requestFromDb.osDocuments.length > i; i++) {
         s3.deleteObject({
@@ -747,6 +744,10 @@ export class MaintanceRequestService {
         },
       });
     }
+
+    const deletedRequest = await this.db.maintenceRequest.delete({
+      where: { id },
+    });
 
     return `Solicitação ID: ${deletedRequest.id}, deletada com sucesso!`;
   }

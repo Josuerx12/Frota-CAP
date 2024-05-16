@@ -24,15 +24,6 @@ export declare class MaintanceRequestService {
                 updatedAt: Date;
                 maintenanceId: number;
             }[];
-            Vehicle: {
-                id: number;
-                name: string;
-                plate: string;
-                active: boolean;
-                providerId: number;
-                createdAt: Date;
-                updatedAt: Date;
-            };
             Workshop: {
                 name: string;
                 email: string;
@@ -56,6 +47,15 @@ export declare class MaintanceRequestService {
                 createdAt: Date;
                 updatedAt: Date;
             }[];
+            Vehicle: {
+                id: number;
+                name: string;
+                plate: string;
+                active: boolean;
+                providerId: number;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             Owner: {
                 name: string;
                 email: string;
@@ -111,15 +111,6 @@ export declare class MaintanceRequestService {
                 updatedAt: Date;
                 maintenanceId: number;
             }[];
-            Vehicle: {
-                id: number;
-                name: string;
-                plate: string;
-                active: boolean;
-                providerId: number;
-                createdAt: Date;
-                updatedAt: Date;
-            };
             Workshop: {
                 name: string;
                 email: string;
@@ -143,6 +134,15 @@ export declare class MaintanceRequestService {
                 createdAt: Date;
                 updatedAt: Date;
             }[];
+            Vehicle: {
+                id: number;
+                name: string;
+                plate: string;
+                active: boolean;
+                providerId: number;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             Owner: {
                 name: string;
                 email: string;
@@ -198,15 +198,6 @@ export declare class MaintanceRequestService {
                 updatedAt: Date;
                 maintenanceId: number;
             }[];
-            Vehicle: {
-                id: number;
-                name: string;
-                plate: string;
-                active: boolean;
-                providerId: number;
-                createdAt: Date;
-                updatedAt: Date;
-            };
             Workshop: {
                 name: string;
                 email: string;
@@ -230,6 +221,15 @@ export declare class MaintanceRequestService {
                 createdAt: Date;
                 updatedAt: Date;
             }[];
+            Vehicle: {
+                id: number;
+                name: string;
+                plate: string;
+                active: boolean;
+                providerId: number;
+                createdAt: Date;
+                updatedAt: Date;
+            };
             Owner: {
                 name: string;
                 email: string;
