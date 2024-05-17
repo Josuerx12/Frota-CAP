@@ -340,6 +340,14 @@ let MaintanceRequestService = class MaintanceRequestService {
             this.mail.send(res.Owner.email, res);
             this.mail.send(res.Workshop.email, res);
             this.api.post('/send-text', {
+                phone: `55${res.Workshop.phone}`,
+                message: `*Frotas CAP - Notificação*
+        *⛔ Veiculo à ser enviado ⛔*
+        Uma nova manutenção foi atribuida a você!
+        Caso veiculo já tenha chegado, acesse o link: https://frota-cap-front.vercel.app/ e atualize o status da manutenção.
+        `,
+            });
+            this.api.post('/send-text', {
                 phone: `55${res.Owner.phone}`,
                 message: this.wppMessageTemplate(res),
             });
